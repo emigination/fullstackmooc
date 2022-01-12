@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import ContactsList from './components/ContactsList'
+import AddingForm from './components/AddingForm'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -11,8 +13,8 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
     persons.some(person => person.name === newName)
-    ? alert(`${newName} has already been added to the phonebook!`)
-    : setPersons(persons.concat({ name: newName, number: newNumber }))
+      ? alert(`${newName} has already been added to the phonebook!`)
+      : setPersons(persons.concat({ name: newName, number: newNumber }))
   }
 
   const handleNameChange = (event) => {
@@ -27,27 +29,15 @@ const App = () => {
     setFilter(event.target.value)
   }
 
-  const personsToShow = contactsFilter.length > 0
-    ? persons.filter(person => person.name.toLowerCase().includes(contactsFilter.toLowerCase()))
-    : persons
-
   return (
     <div>
       <h1>Phonebook</h1>
       <h3>Contacts</h3>
-      <div><p>Filter: <input onChange={handleFilter}/></p></div>
-      <div>{personsToShow.map(person => <div key={person.name}>{person.name}, {person.number}</div>)}</div>
+      <ContactsList handleFilter={handleFilter} persons={persons} contactsFilter={contactsFilter} />
       <h3>Add new</h3>
-      <form onSubmit={addPerson}>
-        <div>Name: <input onChange={handleNameChange}/></div>
-        <div>Number: <input onChange={handleNumberChange}/></div>
-        <div>
-          <button type="submit">Add</button>
-        </div>
-      </form>
+      <AddingForm addPerson={addPerson} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
     </div>
   )
-
 }
 
 export default App
