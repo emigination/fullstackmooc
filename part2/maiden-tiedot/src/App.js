@@ -19,7 +19,7 @@ const App = () => {
   return (
   <div>
     <p>Find countries: <input onChange={handleFilter}/></p>
-    <CountryList countries={countryList} countryFilter={countryFilter} />
+    <CountryList countries={countryList} countryFilter={countryFilter} setFilter={setFilter}/>
   </div>
 )}
 

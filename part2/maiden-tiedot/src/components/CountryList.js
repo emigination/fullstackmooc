@@ -29,7 +29,7 @@ const CountryList = (props) => {
 
   return matchingCountries.length > 10
   ?  <div>Too many matches, specify another filter</div>
-  : <div>{matchingCountries.map(country => <div key={country.name.common}>{country.name.common}</div>)}</div>
+  : <div>{matchingCountries.map(country => <div key={country.name.common}>{country.name.common} <button onClick={() => props.setFilter(country.name.common)}>Show</button></div>)}</div>
 }
 
 export default CountryList
