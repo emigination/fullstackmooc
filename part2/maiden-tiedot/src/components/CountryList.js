@@ -1,7 +1,26 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
+import axios from 'axios'
+
+const Weather = ({weather}) => {
+  if (weather.length<1) {
+    return <div></div>
+  }
+  return <div>
+    <div>Description: {weather.weather[0].description}</div>
+    <div>Temperature: {weather.main.temp} °C</div>
+    <div>Wind: {weather.wind.speed}</div>
+  </div>
+}
 
 const CountryInfo = ({country}) => {
   const languages = Object.entries(country.languages)
+  const [weather, setWeather] = useState('')
+  const api_key = process.env.REACT_APP_API_KEY
+  useEffect(() => {
+    axios
+      .get(`https://api.openweathermap.org/data/2.5/weather?q=${country.capital[0]}&appid=${api_key}&units=metric`)
+      .then(response => {setWeather(response.data)})
+  }, [])
   return <div>
     <h1>{country.name.common}</h1>
     <div>Capital: {country.capital[0]}</div>
@@ -9,6 +28,9 @@ const CountryInfo = ({country}) => {
     <div>Languages: {languages[0][1]}{languages.slice(1).map(([key, val])=> <span key={key}>, {val}</span>)}</div>
     <br/>
     <img src={country.flags.png} alt={`Flag of ${country.name.common}`}></img>
+    <br />
+    <h2>Weather in {country.capital[0]}</h2>
+    <Weather weather={weather} />
   </div>
 }
 
