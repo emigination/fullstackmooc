@@ -41,13 +41,26 @@ const App = () => {
     setFilter(event.target.value)
   }
 
+  const handleDelete = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      personService.deletePerson(id)
+      setPersons(persons.filter(person => person.id!==id))
+    }
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
       <h3>Contacts</h3>
-      <ContactsList handleFilter={handleFilter} persons={persons} contactsFilter={contactsFilter} />
+      <ContactsList handleFilter={handleFilter} persons={persons} contactsFilter={contactsFilter} handleDelete={handleDelete}/>
       <h3>Add new</h3>
-      <AddingForm addPerson={addPerson} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} newName={newName} newNumber={newNumber} />
+      <AddingForm
+        addPerson={addPerson}
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
+        newName={newName}
+        newNumber={newNumber}
+      />
     </div>
   )
 }

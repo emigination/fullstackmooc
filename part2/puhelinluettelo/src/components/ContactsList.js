@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Contact = (props) => {
-  return <div>{props.person.name}, {props.person.number}</div>
+  return <div>{props.person.name}, {props.person.number} <button onClick={props.handleDelete}>Delete</button></div>
 }
 
 const ContactsList = (props) => {
@@ -12,7 +12,7 @@ const ContactsList = (props) => {
   return (
     <div>
     <p>Filter: <input onChange={props.handleFilter}/></p>
-    {personsToShow.map(person => <Contact key={person.name} person={person} />)}
+    {personsToShow.map(person => <Contact key={person.id} person={person} handleDelete={() => props.handleDelete(person.id, person.name)}/>)}
     </div>
   )
 }
