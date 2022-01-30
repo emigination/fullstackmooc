@@ -19,7 +19,17 @@ const App = () => {
     event.preventDefault()
     persons.some(person => person.name === newName)
       ? alert(`${newName} has already been added to the phonebook!`)
-      : setPersons(persons.concat({ name: newName, number: newNumber }))
+      : newPerson()
+  }
+
+  const newPerson = () => {
+    axios.
+      post('http://localhost:3001/persons', { name: newName, number: newNumber }).
+      then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
   const handleNameChange = (event) => {
@@ -40,7 +50,7 @@ const App = () => {
       <h3>Contacts</h3>
       <ContactsList handleFilter={handleFilter} persons={persons} contactsFilter={contactsFilter} />
       <h3>Add new</h3>
-      <AddingForm addPerson={addPerson} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
+      <AddingForm addPerson={addPerson} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} newName={newName} newNumber={newNumber}/>
     </div>
   )
 }
