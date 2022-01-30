@@ -10,8 +10,7 @@ const App = () => {
   const [contactsFilter, setFilter] = useState('')
 
   useEffect(() => {
-    personService.getAll().then(initialPersons =>
-      { setPersons(initialPersons) })
+    personService.getAll().then(initialPersons => { setPersons(initialPersons) })
   }, [])
 
   const newPerson = () => {
@@ -22,11 +21,26 @@ const App = () => {
     })
   }
 
+  const editNumber = (person) => {
+    personService.editNumber(person, newNumber).then(editedPerson => {
+      setPersons(persons.map(person => person.id === editedPerson.id ? editedPerson : person))
+      setNewName('')
+      setNewNumber('')
+    })
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
-    persons.some(person => person.name === newName)
-      ? alert(`${newName} has already been added to the phonebook!`)
-      : newPerson()
+    const sameName = persons.filter(person => person.name === newName)
+    if (sameName.length > 0) {
+      if (sameName[0].number === newNumber) {
+        alert(`${newName} has already been added to the phonebook with the same number!`)
+      } else if (window.confirm(`${newName} has already been added to the phonebook with a different number. Replace the old number?`)) {
+        editNumber(sameName[0])
+      }
+    } else {
+      newPerson()
+    }
   }
 
   const handleNameChange = (event) => {
@@ -44,7 +58,7 @@ const App = () => {
   const handleDelete = (id, name) => {
     if (window.confirm(`Delete ${name}?`)) {
       personService.deletePerson(id)
-      setPersons(persons.filter(person => person.id!==id))
+      setPersons(persons.filter(person => person.id !== id))
     }
   }
 
@@ -52,7 +66,7 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       <h3>Contacts</h3>
-      <ContactsList handleFilter={handleFilter} persons={persons} contactsFilter={contactsFilter} handleDelete={handleDelete}/>
+      <ContactsList handleFilter={handleFilter} persons={persons} contactsFilter={contactsFilter} handleDelete={handleDelete} />
       <h3>Add new</h3>
       <AddingForm
         addPerson={addPerson}
