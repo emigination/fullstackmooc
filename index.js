@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
+var morgan = require('morgan')
 
 app.use(express.json())
+app.use(morgan('tiny'))
 
 let contacts = [
   {
@@ -80,8 +82,6 @@ app.post('/api/persons', (req, res) => {
   contacts = contacts.concat(contact)
 
   res.json(contact)
-
-  console.log(contacts)
 })
 
 const PORT = 3001
