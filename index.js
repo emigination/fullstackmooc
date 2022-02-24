@@ -22,29 +22,6 @@ app.use(morgan((tokens, req, res) => {
   ].join(' ')
 }))
 
-// let contacts = [
-//   {
-//     "name": "Arto Hellas",
-//     "number": "040-123456",
-//     "id": 1
-//   },
-//   {
-//     "name": "Ada Lovelace",
-//     "number": "39-44-5323523",
-//     "id": 2
-//   },
-//   {
-//     "name": "Dan Abramov",
-//     "number": "12-43-234345",
-//     "id": 3
-//   },
-//   {
-//     "name": "Mary Poppendieck",
-//     "number": "39-23-6423122",
-//     "id": 4
-//   }
-// ]
-
 app.get('/api/persons', (req, res) => {
   Contact.find({}).then(result => {
     res.json(result)
@@ -62,9 +39,10 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-  const id = parseInt(req.params.id)
-  contacts = contacts.filter(person => person.id !== id)
-  res.status(204).end()
+  Contact.findByIdAndRemove(req.params.id)
+    .then(result => {
+      res.status(204).end()
+    })
 })
 
 app.post('/api/persons', (req, res) => {
