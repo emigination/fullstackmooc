@@ -22,30 +22,48 @@ app.use(morgan((tokens, req, res) => {
   ].join(' ')
 }))
 
-app.get('/api/persons', (req, res) => {
-  Contact.find({}).then(result => {
-    res.json(result)
-  })
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+  next(error)
+}
+
+app.get('/api/persons', (req, res, next) => {
+  Contact.find({})
+    .then(result => {
+      res.json(result)
+    })
+    .catch(error => next(error))
 })
 
 app.get('/info', (req, res) => {
   res.send(`<div>Phonebook has info for ${contacts.length} people.</div><div>${Date()}</div>`)
 })
 
-app.get('/api/persons/:id', (req, res) => {
-  Contact.findById(req.params.id).then(contact => {
-    res.json(contact)
-  })
+app.get('/api/persons/:id', (req, res, next) => {
+  Contact.findById(req.params.id)
+    .then(contact => {
+      if (contact) {
+        res.json(contact)
+      } else {
+        res.status(400).send({ error: 'malformatted id' })
+      }
+    })
+    .catch(error => next(error)
+  )
 })
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
   Contact.findByIdAndRemove(req.params.id)
     .then(result => {
       res.status(204).end()
     })
+    .catch(error => next(error))
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const body = req.body
   if (!body.name) {
     return res.status(400).json({
@@ -61,11 +79,12 @@ app.post('/api/persons', (req, res) => {
     name: body.name,
     number: body.number,
   })
-  contact.save().then(result => {
-    res.json(contact)
-    mongoose.connection.close()
-  })
+  contact.save()
+    .then(result => {
+      res.json(contact)
+    })
+    .catch(error => next(error))
 })
-
+app.use(errorHandler)
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
