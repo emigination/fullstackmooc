@@ -85,6 +85,17 @@ app.post('/api/persons', (req, res, next) => {
     })
     .catch(error => next(error))
 })
+
+app.put('/api/persons/:id', (req, res, next) => {
+  const contact = {
+    name: req.body.name,
+    number: req.body.number,
+  }
+  Contact.findByIdAndUpdate(req.params.id, contact, { new: true })
+  .then(updated => res.json(updated))
+  .catch(error => next(error))
+})
+
 app.use(errorHandler)
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
