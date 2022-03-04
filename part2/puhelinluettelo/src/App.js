@@ -31,7 +31,7 @@ const App = () => {
         updateMessage('Added', 'success')
       })
       .catch(error => {
-        updateMessage('Failed', 'fail')
+        updateMessage(error.response.data.error, 'fail')
       })
   }
 
