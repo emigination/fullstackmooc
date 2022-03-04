@@ -38,8 +38,12 @@ app.get('/api/persons', (req, res, next) => {
     .catch(error => next(error))
 })
 
-app.get('/info', (req, res) => {
-  res.send(`<div>Phonebook has info for ${contacts.length} people.</div><div>${Date()}</div>`)
+app.get('/info', (req, res, next) => {
+  Contact.find({})
+    .then(result => {
+      res.send(`<div>Phonebook has info for ${result.length} people.</div><div>${Date()}</div>`)
+    })
+    .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (req, res, next) => {
