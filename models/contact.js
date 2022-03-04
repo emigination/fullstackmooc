@@ -20,6 +20,12 @@ const contactSchema = new mongoose.Schema({
   },
   number: {
     type: String,
+    validate: {
+      validator: number => {
+        return number.length>7 && /^\d{2,3}-\d+$/.test(number)
+      },
+      message: 'Number must be at least 8 characters, consist of only numbers and one hyphen, and the part before the hyphen must be 2-3 digits!'
+    },
     required: true
   },
 })
