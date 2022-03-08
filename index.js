@@ -4,13 +4,12 @@ const app = express()
 const cors = require('cors')
 var morgan = require('morgan')
 const Contact = require('./models/contact')
-const { response } = require('express')
 const PORT = process.env.PORT
 
 app.use(express.static('build'))
 app.use(cors())
 app.use(express.json())
-morgan.token('data', function (req, res) { return JSON.stringify(req.body) })
+morgan.token('data', function (req) { return JSON.stringify(req.body) })
 app.use(morgan((tokens, req, res) => {
   return [
     tokens.method(req, res),
@@ -63,7 +62,7 @@ app.get('/api/persons/:id', (req, res, next) => {
 
 app.delete('/api/persons/:id', (req, res, next) => {
   Contact.findByIdAndRemove(req.params.id)
-    .then(result => {
+    .then(() => {
       res.status(204).end()
     })
     .catch(error => next(error))
@@ -86,7 +85,7 @@ app.post('/api/persons', (req, res, next) => {
     number: body.number,
   })
   contact.save()
-    .then(result => {
+    .then(() => {
       res.json(contact)
     })
     .catch(error => next(error))
