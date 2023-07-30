@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Notification from './components/Notification'
 import loginService from './services/login'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
@@ -7,6 +8,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [notification, setNotification] = useState(null)
   const [blogs, setBlogs] = useState([])
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -38,7 +40,8 @@ const App = () => {
       setPassword('')
       window.localStorage.setItem('user', JSON.stringify(userLoggingIn))
     } catch (exception) {
-      console.log(exception)
+      setNotification(exception.response.data.error)
+      setTimeout(() => { setNotification(null) }, 5000)
     }
   }
 
@@ -57,14 +60,20 @@ const App = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
+      setNotification('A new blog was added')
+      setTimeout(() => { setNotification(null) }, 5000)
     } catch (exception) {
-      console.log(exception)
+      setNotification(exception.response?.data?.error || "Invalid input")
+      setTimeout(() => { setNotification(null) }, 5000)
     }
   }
 
   if (user === null) {
     return (
       <div>
+        <div>
+          <Notification message={notification} />
+        </div>
         <h2>Log in</h2>
         <form onSubmit={handleLogin}>
           <div>
@@ -94,6 +103,9 @@ const App = () => {
 
   return (
     <div>
+      <div>
+        <Notification message={notification} />
+       </div>
       Logged in as "{user.name}"
       <button onClick={() => handleLogout()}>Log out</button>
       <h2>blogs</h2>
