@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import Notification from './components/Notification'
 import loginService from './services/login'
-import Blog from './components/Blog'
 import blogService from './services/blogs'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import BlogList from './components/BlogList'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -70,29 +71,7 @@ const App = () => {
         <div>
           <Notification message={notification} />
         </div>
-        <h2>Log in</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            username:
-            <input
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password:
-            <input
-              type="password"
-              value={password}
-
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button type="submit">login</button>
-        </form>
+      <LoginForm handleLogin={handleLogin} username={username} setUsername={setUsername} password={password} setPassword={setPassword} />
       </div>
     )
   }
@@ -104,11 +83,7 @@ const App = () => {
       </div>
       Logged in as "{user.name}"
       <button onClick={() => handleLogout()}>Log out</button>
-      <h2>blogs</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-
+      <BlogList blogs={blogs}/>
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
         <BlogForm
           createNewBlog={createNewBlog}
