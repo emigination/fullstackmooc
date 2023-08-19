@@ -1,32 +1,39 @@
 import { useState } from "react"
-import { update } from "../services/blogs"
+import { update, destroy } from "../services/blogs"
 
-const Blog = ({ blog }) => {
-  const [detailView, setDetailView] = useState(false)
+const Blog = ({ blog, isOwn }) => {
+  const [view, setView] = useState('concise')
   const [likes, setLikes] = useState(blog.likes)
   const addLike = async () => {
     update({ ...blog, likes: likes + 1 })
     setLikes(likes + 1)
   }
+  const remove = async () => {
+    if (window.confirm(`Delete blog ${blog.title}?`)) {
+      destroy(blog.id)
+      setView('hidden')
+    }
+  }
 
-  if (detailView) {
+  if (view === 'details') {
     return (
       <div>
         {blog.title} {blog.author}
-        <button onClick={() => setDetailView(false)}>hide</button>
+        <button onClick={() => setView('concise')}>hide</button>
         <p>{blog.url}</p>
         <p>{likes} <button onClick={addLike}>like</button></p>
         <p>{blog.user.name}</p>
+        {isOwn && <p><button onClick={remove}>delete</button></p>}
       </div>
     )
-  } else {
+  } else if (view === 'concise') {
     return (
       <div>
         {blog.title} {blog.author}
-        <button onClick={() => setDetailView(true)}>view</button>
+        <button onClick={() => setView('details')}>view</button>
       </div>
     )
   }
-}
+};
 
 export default Blog
