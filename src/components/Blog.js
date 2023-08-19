@@ -1,5 +1,6 @@
-import { useState } from "react"
-import { update, destroy } from "../services/blogs"
+import { useState } from 'react'
+import PropTypes from 'prop-types'
+import { update, destroy } from '../services/blogs'
 
 const Blog = ({ blog, isOwn }) => {
   const [view, setView] = useState('concise')
@@ -34,6 +35,11 @@ const Blog = ({ blog, isOwn }) => {
       </div>
     )
   }
-};
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  isOwn: PropTypes.bool.isRequired
+}
 
 export default Blog

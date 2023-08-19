@@ -60,7 +60,7 @@ const App = () => {
       setNotification('A new blog was added')
       setTimeout(() => { setNotification(null) }, 5000)
     } catch (exception) {
-      setNotification(exception.response?.data?.error || "Invalid input")
+      setNotification(exception.response?.data?.error || 'Invalid input')
       setTimeout(() => { setNotification(null) }, 5000)
     }
   }
@@ -71,7 +71,7 @@ const App = () => {
         <div>
           <Notification message={notification} />
         </div>
-      <LoginForm handleLogin={handleLogin} username={username} setUsername={setUsername} password={password} setPassword={setPassword} />
+        <LoginForm handleLogin={handleLogin} username={username} setUsername={setUsername} password={password} setPassword={setPassword} />
       </div>
     )
   }
@@ -81,10 +81,10 @@ const App = () => {
       <div>
         <Notification message={notification} />
       </div>
-      Logged in as "{user.name}"
+      Logged in as &lsquo;{user.name}&rsquo;
       <button onClick={() => handleLogout()}>Log out</button>
-      <BlogList blogs={blogs} user={user}/>
-      <Togglable buttonLabel="new blog" ref={blogFormRef}>
+      <BlogList blogs={blogs} user={user} />
+      <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <BlogForm
           createNewBlog={createNewBlog}
         />

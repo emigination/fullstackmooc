@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import Blog from './Blog'
 
 const BlogList = ({ blogs, user }) => {
@@ -9,6 +10,11 @@ const BlogList = ({ blogs, user }) => {
       )}
     </div>
   )
+}
+
+BlogList.propTypes = {
+  blogs: PropTypes.arrayOf(PropTypes.object),
+  user: PropTypes.object.isRequired
 }
 
 export default BlogList
