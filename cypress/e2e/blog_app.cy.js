@@ -24,11 +24,29 @@ describe('Blog app', function() {
 
     it('fails with wrong credentials', function() {
       cy.get('#username').type('testuser')
-      cy.get('#password').type('password')
+      cy.get('#password').type('wrongpw')
       cy.get('#login').click()
 
       cy.contains('Incorrect password')
       cy.should('not.contain', 'Logged in as')
+    })
+  })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.login({ username: 'testuser', password: 'testisalasana' })
+    })
+
+    it('A blog can be created', function() {
+      cy.contains('new blog').click()
+      cy.get('#title').type('Blogin nimi')
+      cy.get('#author').type('Blogin Kirjoittaja')
+      cy.get('#url').type('https://blogi.fi')
+      cy.get('#create').click()
+
+      cy.contains('A new blog was added')
+      cy.contains('Blogin nimi')
+      cy.contains('Blogin Kirjoittaja')
     })
   })
 })
