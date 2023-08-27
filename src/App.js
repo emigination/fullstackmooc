@@ -81,7 +81,7 @@ const App = () => {
       <div>
         <Notification message={notification} />
       </div>
-      Logged in as &lsquo;{user.name}&rsquo;
+      Logged in as &quot;{user.name}&quot;
       <button onClick={() => handleLogout()}>Log out</button>
       <BlogList blogs={blogs} user={user} update={blogService.update} destroy={blogService.destroy} />
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
