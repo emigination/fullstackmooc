@@ -30,7 +30,7 @@ const Blog = ({ blog, isOwn, update, destroy }) => {
     return (
       <div>
         {blog.title} {blog.author}
-        <button onClick={() => setView('details')}>view</button>
+        <button className='view-button' onClick={() => setView('details')}>view</button>
       </div>
     )
   }

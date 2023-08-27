@@ -89,6 +89,18 @@ describe('Blog app', function() {
 
         cy.get('html').should('not.contain', 'delete')
       })
+
+      it('Blogs are ordered by number of likes', function() {
+        cy.get('.view-button:last').click()
+        cy.contains('like').click()
+        cy.visit('')
+
+        cy.get('.view-button').should('have.length', 2)
+
+        cy.get('.view-button:first').click()
+
+        cy.contains('likes: 1')
+      })
     })
   })
 })
