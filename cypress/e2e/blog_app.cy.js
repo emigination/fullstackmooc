@@ -79,6 +79,16 @@ describe('Blog app', function() {
 
         cy.get('html').should('not.contain', 'Blogin nimi')
       })
+
+      it('Only the creator can delete a blog', function() {
+        cy.contains('Log out').click()
+        const user = { name: 'Another User', username: 'anotheruser', password: 'testisalasana' }
+        cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+        cy.login({ username: 'anotheruser', password: 'testisalasana' })
+        cy.contains('view').click()
+
+        cy.get('html').should('not.contain', 'delete')
+      })
     })
   })
 })
