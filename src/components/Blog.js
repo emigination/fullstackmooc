@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { update, destroy } from '../services/blogs'
 
-const Blog = ({ blog, isOwn }) => {
+const Blog = ({ blog, isOwn, update, destroy }) => {
   const [view, setView] = useState('concise')
   const [likes, setLikes] = useState(blog.likes)
   const addLike = async () => {
@@ -39,7 +38,9 @@ const Blog = ({ blog, isOwn }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  isOwn: PropTypes.bool.isRequired
+  isOwn: PropTypes.bool.isRequired,
+  update: PropTypes.func,
+  destroy: PropTypes.func
 }
 
 export default Blog
