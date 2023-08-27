@@ -21,7 +21,7 @@ const Blog = ({ blog, isOwn, update, destroy }) => {
         {blog.title} {blog.author}
         <button onClick={() => setView('concise')}>hide</button>
         <p>{blog.url}</p>
-        <p>{likes} <button onClick={addLike}>like</button></p>
+        <p>likes: {likes} <button onClick={addLike}>like</button></p>
         <p>{blog.user.name}</p>
         {isOwn && <p><button onClick={remove}>delete</button></p>}
       </div>

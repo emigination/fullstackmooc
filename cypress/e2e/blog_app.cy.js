@@ -48,5 +48,30 @@ describe('Blog app', function() {
       cy.contains('Blogin nimi')
       cy.contains('Blogin Kirjoittaja')
     })
+
+    describe('and blogs exist', function () {
+      beforeEach(function () {
+        cy.request({
+          url: `${Cypress.env('BACKEND')}/blogs`,
+          method: 'POST',
+          auth: { bearer: JSON.parse(localStorage.getItem('user')).token },
+          body: { title: 'Blogin nimi', author: 'Blogin Kirjoittaja', url: 'https://blogi.fi' }
+        })
+        cy.request({
+          url: `${Cypress.env('BACKEND')}/blogs`,
+          method: 'POST',
+          auth: { bearer: JSON.parse(localStorage.getItem('user')).token },
+          body: { title: 'Toinen blogi', author: 'Toinen Henkilö', url: 'https://toinen.fi' }
+        })
+        cy.visit('')
+      })
+
+      it('A blog can be liked', function() {
+        cy.contains('view').click()
+        cy.contains('like').click()
+
+        cy.contains('likes: 1')
+      })
+    })
   })
 })

@@ -20,7 +20,7 @@ test('display blog details when view button is clicked', async () => {
 
   screen.getByText('Blog Title Blog Author')
   screen.getByText('https://example.com')
-  screen.getByText('0')
+  screen.getByText('likes: 0')
   screen.getByText('Blog User')
 })
 
