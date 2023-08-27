@@ -72,6 +72,13 @@ describe('Blog app', function() {
 
         cy.contains('likes: 1')
       })
+
+      it('A blog can be deleted', function() {
+        cy.contains('Blogin nimi').parent().contains('view').click()
+        cy.contains('delete').click()
+
+        cy.get('html').should('not.contain', 'Blogin nimi')
+      })
     })
   })
 })
