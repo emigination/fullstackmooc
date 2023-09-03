@@ -21,17 +21,20 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...content.fields} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...author.fields} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...info.fields} />
         </div>
         <button>create</button>
+        <button type="button" onClick={() => {
+          [content, author, info].forEach(({ reset }) => reset())
+        }}>reset</button>
       </form>
     </div>
   )
