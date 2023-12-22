@@ -27,6 +27,10 @@ const reducer = (state = initialState, action) => {
         anecdote.id === id ? { ...anecdote, votes: anecdote.votes + 1 } : anecdote
       )
     }
+    case 'ADD': {
+      const content = action.data.content
+      return [...state, asObject(content)]
+    }
     default:
       break
   }
