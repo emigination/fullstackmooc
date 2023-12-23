@@ -8,10 +8,9 @@ const Notification = () => {
     borderWidth: 1
   }
   return (
-    <div style={style}>
-      {notification}
-    </div>
-  )
+    <div>
+      {notification.map((message, index) => <div style={style} key={index}> {message} </div>)}
+    </div>)
 }
 
 export default Notification
