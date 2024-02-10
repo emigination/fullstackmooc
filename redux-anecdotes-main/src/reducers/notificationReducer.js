@@ -1,19 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = []
+const initialState = [];
 
 const notificationSlice = createSlice({
   name: 'notification',
   initialState,
   reducers: {
     addNotification(state, action) {
-      state.unshift(action.payload)
+      state.unshift(action.payload);
     },
     popNotification(state) {
-      state.pop()
+      state.pop();
     }
   }
-})
+});
 
-export const { addNotification, popNotification } = notificationSlice.actions
-export default notificationSlice.reducer
+export const { addNotification, popNotification } = notificationSlice.actions;
+export default notificationSlice.reducer;

@@ -1,19 +1,19 @@
-import { useDispatch } from 'react-redux'
-import { createNewAnecdote } from '../reducers/anecdoteReducer'
-import { addNotification, popNotification } from '../reducers/notificationReducer'
+import { useDispatch } from 'react-redux';
+import { createNewAnecdote } from '../reducers/anecdoteReducer';
+import { addNotification, popNotification } from '../reducers/notificationReducer';
 
 const AnecdoteForm = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const addAnecdote = (event) => {
-    event.preventDefault()
-    dispatch(createNewAnecdote(event.target.anecdote.value))
-    dispatch(addNotification(`You added new anecdote "${event.target.anecdote.value}"`))
+    event.preventDefault();
+    dispatch(createNewAnecdote(event.target.anecdote.value));
+    dispatch(addNotification(`You added new anecdote "${event.target.anecdote.value}"`));
     setTimeout(() => {
-      dispatch(popNotification())
-    }, 5000)
-    event.target[0].value = ''
-  }
+      dispatch(popNotification());
+    }, 5000);
+    event.target[0].value = '';
+  };
 
   return (
     <div>
@@ -23,7 +23,7 @@ const AnecdoteForm = () => {
         <button>create</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default AnecdoteForm
+export default AnecdoteForm;
