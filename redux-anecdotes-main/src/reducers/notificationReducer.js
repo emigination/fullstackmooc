@@ -15,5 +15,14 @@ const notificationSlice = createSlice({
   }
 });
 
-export const { addNotification, popNotification } = notificationSlice.actions;
+export const setNotification = (message, seconds) => {
+  return dispatch => {
+    dispatch(addNotification(message));
+    setTimeout(() => {
+      dispatch(popNotification());
+    }, seconds * 1000);
+  }
+}
+
+const { addNotification, popNotification } = notificationSlice.actions;
 export default notificationSlice.reducer;

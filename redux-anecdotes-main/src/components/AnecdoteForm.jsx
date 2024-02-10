@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { createNewAnecdote } from '../reducers/anecdoteReducer';
-import { addNotification, popNotification } from '../reducers/notificationReducer';
+import { setNotification } from '../reducers/notificationReducer';
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
@@ -8,10 +8,7 @@ const AnecdoteForm = () => {
   const addAnecdote = (event) => {
     event.preventDefault();
     dispatch(createNewAnecdote(event.target.anecdote.value));
-    dispatch(addNotification(`You added new anecdote "${event.target.anecdote.value}"`));
-    setTimeout(() => {
-      dispatch(popNotification());
-    }, 5000);
+    dispatch(setNotification(`You added new anecdote "${event.target.anecdote.value}"`, 5));
     event.target[0].value = '';
   };
 
