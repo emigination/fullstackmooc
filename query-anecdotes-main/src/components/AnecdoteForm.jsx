@@ -1,9 +1,9 @@
-const AnecdoteForm = ({newAnecdoteMutation}) => {
+const AnecdoteForm = ({newAnecdoteMutation, setNotification}) => {
   const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    newAnecdoteMutation.mutate(content)
+    newAnecdoteMutation.mutate(content, { onError: () => setNotification(`Failed to create anecdote '${content}'`) })
 }
 
   return (
