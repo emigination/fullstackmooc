@@ -1,12 +1,13 @@
 Cypress.Commands.add('login', ({ username, password }) => {
-  cy.request('POST',  `${Cypress.env('BACKEND')}/login`, {
-    username, password
+  cy.request('POST', `${Cypress.env('BACKEND')}/login`, {
+    username,
+    password,
   }).then(({ body }) => {
-    console.log(JSON.stringify(body))
-    localStorage.setItem('user', JSON.stringify(body))
-    cy.visit('http://localhost:3000')
-  })
-})
+    console.log(JSON.stringify(body));
+    localStorage.setItem('user', JSON.stringify(body));
+    cy.visit('http://localhost:3000');
+  });
+});
 
 // ***********************************************
 // This example commands.js shows you how to

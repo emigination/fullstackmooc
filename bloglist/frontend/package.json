@@ -39,6 +39,7 @@
   },
   "proxy": "http://localhost:3003",
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.22.10",
     "@babel/preset-react": "^7.22.5",
     "@testing-library/jest-dom": "^6.1.2",
@@ -54,7 +55,8 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "jest-environment-jsdom": "^29.6.4"
+    "jest-environment-jsdom": "^29.6.4",
+    "prettier": "^3.2.5"
   },
   "jest": {
     "testEnvironment": "jsdom",
@@ -62,5 +64,13 @@
       "^.+\\.svg$": "jest-svg-transformer",
       "^.+\\.(css|less|scss)$": "identity-obj-proxy"
     }
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true,
+    "jsxSingleQuote": true,
+    "arrowParens": "avoid"
   }
 }
