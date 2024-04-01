@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Blog from './Blog';
 
-const BlogList = ({ blogs, user, update, destroy }) => {
+const BlogList = ({ blogs, user, likeMutation, deleteMutation }) => {
   return (
     <div>
       <h2>blogs</h2>
@@ -12,8 +12,8 @@ const BlogList = ({ blogs, user, update, destroy }) => {
             key={blog.id}
             blog={blog}
             isOwn={blog.user.username === user.username}
-            update={update}
-            destroy={destroy}
+            likeMutation={likeMutation}
+            deleteMutation={deleteMutation}
           />
         ))}
     </div>
@@ -23,6 +23,8 @@ const BlogList = ({ blogs, user, update, destroy }) => {
 BlogList.propTypes = {
   blogs: PropTypes.arrayOf(PropTypes.object),
   user: PropTypes.object.isRequired,
+  likeMutation: PropTypes.object.isRequired,
+  deleteMutation: PropTypes.object.isRequired,
 };
 
 export default BlogList;

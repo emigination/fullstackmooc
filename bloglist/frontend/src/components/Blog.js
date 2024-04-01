@@ -1,17 +1,12 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const Blog = ({ blog, isOwn, update, destroy }) => {
+const Blog = ({ blog, isOwn, likeMutation, deleteMutation }) => {
   const [view, setView] = useState('concise');
-  const [likes, setLikes] = useState(blog.likes);
-  const addLike = async () => {
-    update({ ...blog, likes: likes + 1 });
-    setLikes(likes + 1);
-  };
+  const addLike = () => likeMutation.mutate(blog);
   const remove = async () => {
     if (window.confirm(`Delete blog ${blog.title}?`)) {
-      destroy(blog.id);
-      setView('hidden');
+      deleteMutation.mutate(blog);
     }
   };
 
@@ -22,7 +17,7 @@ const Blog = ({ blog, isOwn, update, destroy }) => {
         <button onClick={() => setView('concise')}>hide</button>
         <p>{blog.url}</p>
         <p>
-          likes: {likes} <button onClick={addLike}>like</button>
+          likes: {blog.likes} <button onClick={addLike}>like</button>
         </p>
         <p>{blog.user.name}</p>
         {isOwn && (
@@ -47,8 +42,8 @@ const Blog = ({ blog, isOwn, update, destroy }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   isOwn: PropTypes.bool.isRequired,
-  update: PropTypes.func,
-  destroy: PropTypes.func,
+  likeMutation: PropTypes.object.isRequired,
+  deleteMutation: PropTypes.object.isRequired,
 };
 
 export default Blog;

@@ -42,6 +42,16 @@ const App = () => {
     },
   });
 
+  const likeMutation = useMutation({
+    mutationFn: blog => blogService.update({ ...blog, likes: blog.likes + 1 }),
+    onSuccess: () => queryClient.invalidateQueries('blogs'),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: blog => blogService.destroy(blog.id),
+    onSuccess: () => queryClient.invalidateQueries('blogs'),
+  });
+
   const result = useQuery({ queryKey: ['blogs'], queryFn: blogService.getAll });
   if (result.isLoading) {
     return <div>Loading...</div>;
@@ -99,8 +109,8 @@ const App = () => {
       <BlogList
         blogs={blogs}
         user={user}
-        update={blogService.update}
-        destroy={blogService.destroy}
+        likeMutation={likeMutation}
+        deleteMutation={deleteMutation}
       />
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <BlogForm addBlogMutation={addBlogMutation} />
