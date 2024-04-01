@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Notification from './components/Notification';
 import { useNotificationDispatch } from './NotificationContext';
 import loginService from './services/login';
@@ -9,10 +10,10 @@ import BlogList from './components/BlogList';
 import LoginForm from './components/LoginForm';
 
 const App = () => {
+  const queryClient = useQueryClient();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [blogs, setBlogs] = useState([]);
   const blogFormRef = useRef();
   const notificationDispatch = useNotificationDispatch();
 
@@ -32,9 +33,23 @@ const App = () => {
     }
   }, []);
 
-  useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs(blogs));
-  }, []);
+  const addBlogMutation = useMutation({
+    mutationFn: blogService.createNew,
+    onSuccess: () => {
+      queryClient.invalidateQueries('blogs');
+      blogFormRef.current.toggleVisibility();
+      setNotification('A new blog was added');
+    },
+  });
+
+  const result = useQuery({ queryKey: ['blogs'], queryFn: blogService.getAll });
+  if (result.isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (result.isError) {
+    return <div>Server-side error</div>;
+  }
+  const blogs = result.data;
 
   const handleLogin = async event => {
     event.preventDefault();
@@ -55,17 +70,6 @@ const App = () => {
     window.localStorage.removeItem('user');
     setUser(null);
     blogService.setToken(null);
-  };
-
-  const createNewBlog = async blogData => {
-    blogFormRef.current.toggleVisibility();
-    try {
-      const newBlog = await blogService.createNew(blogData);
-      setBlogs(blogs.concat(newBlog));
-      setNotification('A new blog was added');
-    } catch (exception) {
-      setNotification(exception.response?.data?.error || 'Invalid input');
-    }
   };
 
   if (user === null) {
@@ -99,7 +103,7 @@ const App = () => {
         destroy={blogService.destroy}
       />
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
-        <BlogForm createNewBlog={createNewBlog} />
+        <BlogForm addBlogMutation={addBlogMutation} />
       </Togglable>
     </div>
   );

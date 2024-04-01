@@ -1,17 +1,13 @@
 import { useState } from 'react';
 
-const BlogForm = ({ createNewBlog }) => {
+const BlogForm = ({ addBlogMutation }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
 
   const submitBlog = event => {
     event.preventDefault();
-    createNewBlog({
-      title: title,
-      author: author,
-      url: url,
-    });
+    addBlogMutation.mutate({ title: title, author: author, url: url });
 
     setTitle('');
     setAuthor('');
