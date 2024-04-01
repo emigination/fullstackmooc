@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Notification from './components/Notification';
+import { useNotificationDispatch } from './NotificationContext';
 import loginService from './services/login';
 import blogService from './services/blogs';
 import BlogForm from './components/BlogForm';
@@ -11,9 +12,16 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState(null);
   const [blogs, setBlogs] = useState([]);
   const blogFormRef = useRef();
+  const notificationDispatch = useNotificationDispatch();
+
+  const setNotification = message => {
+    notificationDispatch({ type: 'SET', payload: message });
+    setTimeout(() => {
+      notificationDispatch({ type: 'REMOVE', payload: message });
+    }, 5000);
+  };
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('user');
@@ -40,9 +48,6 @@ const App = () => {
       window.localStorage.setItem('user', JSON.stringify(userLoggingIn));
     } catch (exception) {
       setNotification(exception.response.data.error);
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000);
     }
   };
 
@@ -58,14 +63,8 @@ const App = () => {
       const newBlog = await blogService.createNew(blogData);
       setBlogs(blogs.concat(newBlog));
       setNotification('A new blog was added');
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000);
     } catch (exception) {
       setNotification(exception.response?.data?.error || 'Invalid input');
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000);
     }
   };
 
@@ -73,7 +72,7 @@ const App = () => {
     return (
       <div>
         <div>
-          <Notification message={notification} />
+          <Notification />
         </div>
         <LoginForm
           handleLogin={handleLogin}
@@ -89,7 +88,7 @@ const App = () => {
   return (
     <div>
       <div>
-        <Notification message={notification} />
+        <Notification />
       </div>
       Logged in as &quot;{user.name}&quot;
       <button onClick={() => handleLogout()}>Log out</button>
