@@ -65,6 +65,10 @@ const App = () => {
     }
   }
 
+  const updateBlogInList = (blog) => {
+    setBlogs(blogs.map(b => b.id === blog.id ? blog : b))
+  }
+
   if (user === null) {
     return (
       <div>
@@ -83,7 +87,7 @@ const App = () => {
       </div>
       Logged in as &quot;{user.name}&quot;
       <button onClick={() => handleLogout()}>Log out</button>
-      <BlogList blogs={blogs} user={user} update={blogService.update} destroy={blogService.destroy} />
+      <BlogList blogs={blogs} user={user} update={blogService.update} destroy={blogService.destroy} updateBlogInList={updateBlogInList} />
       <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <BlogForm
           createNewBlog={createNewBlog}

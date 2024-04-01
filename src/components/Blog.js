@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, isOwn, update, destroy }) => {
+const Blog = ({ blog, isOwn, update, destroy, updateBlogInList }) => {
   const [view, setView] = useState('concise')
   const [likes, setLikes] = useState(blog.likes)
   const addLike = async () => {
     update({ ...blog, likes: likes + 1 })
+    updateBlogInList({ ...blog, likes: likes + 1 })
     setLikes(likes + 1)
   }
   const remove = async () => {
