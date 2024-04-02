@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Notification from './components/Notification';
 import { useNotificationDispatch } from './NotificationContext';
@@ -8,14 +8,15 @@ import BlogForm from './components/BlogForm';
 import Togglable from './components/Togglable';
 import BlogList from './components/BlogList';
 import LoginForm from './components/LoginForm';
+import { UserContext } from './UserContext';
 
 const App = () => {
   const queryClient = useQueryClient();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
   const blogFormRef = useRef();
   const notificationDispatch = useNotificationDispatch();
+  const [user, userDispatch] = useContext(UserContext);
 
   const setNotification = message => {
     notificationDispatch({ type: 'SET', payload: message });
@@ -27,9 +28,9 @@ const App = () => {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('user');
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
+      const loggedUser = JSON.parse(loggedUserJSON);
+      userDispatch({ type: 'LOGIN', payload: loggedUser });
+      blogService.setToken(loggedUser.token);
     }
   }, []);
 
@@ -66,7 +67,7 @@ const App = () => {
 
     try {
       const userLoggingIn = await loginService.login({ username, password });
-      setUser(userLoggingIn);
+      userDispatch({ type: 'LOGIN', payload: userLoggingIn });
       blogService.setToken(userLoggingIn.token);
       setUsername('');
       setPassword('');
@@ -78,7 +79,7 @@ const App = () => {
 
   const handleLogout = () => {
     window.localStorage.removeItem('user');
-    setUser(null);
+    userDispatch({ type: 'LOGOUT' });
     blogService.setToken(null);
   };
 
@@ -108,7 +109,6 @@ const App = () => {
       <button onClick={() => handleLogout()}>Log out</button>
       <BlogList
         blogs={blogs}
-        user={user}
         likeMutation={likeMutation}
         deleteMutation={deleteMutation}
       />

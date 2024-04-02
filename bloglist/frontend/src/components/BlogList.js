@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import Blog from './Blog';
+import { useUserValue } from '../UserContext';
 
-const BlogList = ({ blogs, user, likeMutation, deleteMutation }) => {
+const BlogList = ({ blogs, likeMutation, deleteMutation }) => {
+  const user = useUserValue();
   return (
     <div>
       <h2>blogs</h2>
@@ -22,7 +24,6 @@ const BlogList = ({ blogs, user, likeMutation, deleteMutation }) => {
 
 BlogList.propTypes = {
   blogs: PropTypes.arrayOf(PropTypes.object),
-  user: PropTypes.object.isRequired,
   likeMutation: PropTypes.object.isRequired,
   deleteMutation: PropTypes.object.isRequired,
 };
