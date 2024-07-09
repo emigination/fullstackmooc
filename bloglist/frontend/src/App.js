@@ -1,12 +1,20 @@
+import {
+  BrowserRouter as Router,
+  Link,
+  Routes,
+  Route,
+} from 'react-router-dom';
 import { useState, useEffect, useRef, useContext } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Notification from './components/Notification';
 import { useNotificationDispatch } from './NotificationContext';
 import loginService from './services/login';
 import blogService from './services/blogs';
+import userService from './services/users';
 import BlogForm from './components/BlogForm';
 import Togglable from './components/Togglable';
 import BlogList from './components/BlogList';
+import UserList from './components/UserList';
 import LoginForm from './components/LoginForm';
 import { UserContext } from './UserContext';
 
@@ -53,15 +61,6 @@ const App = () => {
     onSuccess: () => queryClient.invalidateQueries('blogs'),
   });
 
-  const result = useQuery({ queryKey: ['blogs'], queryFn: blogService.getAll });
-  if (result.isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (result.isError) {
-    return <div>Server-side error</div>;
-  }
-  const blogs = result.data;
-
   const handleLogin = async event => {
     event.preventDefault();
 
@@ -100,6 +99,19 @@ const App = () => {
     );
   }
 
+  const blogsView = (
+    <div>
+      <BlogList
+        queryFunction={blogService.getAll}
+        likeMutation={likeMutation}
+        deleteMutation={deleteMutation}
+      />
+      <Togglable buttonLabel='new blog' ref={blogFormRef}>
+        <BlogForm addBlogMutation={addBlogMutation} />
+      </Togglable>
+    </div>
+  );
+
   return (
     <div>
       <div>
@@ -107,14 +119,14 @@ const App = () => {
       </div>
       Logged in as &quot;{user.name}&quot;
       <button onClick={() => handleLogout()}>Log out</button>
-      <BlogList
-        blogs={blogs}
-        likeMutation={likeMutation}
-        deleteMutation={deleteMutation}
-      />
-      <Togglable buttonLabel='new blog' ref={blogFormRef}>
-        <BlogForm addBlogMutation={addBlogMutation} />
-      </Togglable>
+      <div>
+        <Link to="/" style={{ marginRight: 1 + 'em' }}>blogs</Link>
+        <Link to="/users" style={{ marginRight: 1 + 'em' }}>users</Link>
+      </div>
+      <Routes>
+        <Route path="/" element={blogsView} />
+        <Route path="/users" element={<UserList queryFunction={userService.getAll} />} />
+      </Routes>
     </div>
   );
 };
