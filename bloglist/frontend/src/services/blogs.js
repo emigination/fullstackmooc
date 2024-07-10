@@ -12,6 +12,14 @@ const getAll = () => {
   return request.then(response => response.data);
 };
 
+const getById = async data => {
+  const id = data.queryKey[1];
+  if (!id) return null;
+
+  const request = axios.get(`${baseUrl}/${id}`);
+  return request.then(response => response.data || null);
+};
+
 const createNew = async blogData => {
   const response = await axios.post(baseUrl, blogData, {
     headers: { Authorization: token },
@@ -33,4 +41,4 @@ const destroy = async id => {
   return response.data;
 };
 
-export default { setToken, getAll, createNew, update, destroy };
+export default { setToken, getAll, getById, createNew, update, destroy };

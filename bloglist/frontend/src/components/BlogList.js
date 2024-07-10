@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
-import Blog from './Blog';
 import { useUserValue } from '../UserContext';
 
 const BlogList = ({ queryFunction, likeMutation, deleteMutation }) => {
@@ -19,13 +18,9 @@ const BlogList = ({ queryFunction, likeMutation, deleteMutation }) => {
       {blogs
         .sort((a, b) => b.likes - a.likes)
         .map(blog => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            isOwn={blog.user.username === user.username}
-            likeMutation={likeMutation}
-            deleteMutation={deleteMutation}
-          />
+          <p key={blog.id}>
+            <a href={`/blogs/${blog.id}`}>{blog.title}</a>
+          </p>
         ))}
     </div>
   );
