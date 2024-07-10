@@ -16,6 +16,7 @@ import Togglable from './components/Togglable';
 import BlogList from './components/BlogList';
 import BlogPage from './components/BlogPage';
 import UserList from './components/UserList';
+import UserPage from './components/UserPage';
 import LoginForm from './components/LoginForm';
 import { UserContext } from './UserContext';
 
@@ -126,8 +127,9 @@ const App = () => {
       </div>
       <Routes>
         <Route path="/" element={blogsView} />
-        <Route path="/users" element={<UserList queryFunction={userService.getAll} />} />
         <Route path="/blogs/:id" element={<BlogPage queryFunction={blogService.getById} likeMutation={likeMutation} deleteMutation={deleteMutation} />} />
+        <Route path="/users" element={<UserList queryFunction={userService.getAll} />} />
+        <Route path="/users/:id" element={<UserPage queryFunction={userService.getById} />} />
       </Routes>
     </div>
   );

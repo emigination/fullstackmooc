@@ -26,7 +26,7 @@ const UserList = ({ queryFunction }) => {
             .sort((a, b) => b.blogs.length - a.blogs.length)
             .map(user => (
               <tr key={user.id}>
-                <td>{user.name}</td>
+                <td><a href={`/users/${user.id}`}>{user.name}</a></td>
                 <td>{user.blogs.length}</td>
               </tr>
             ))}

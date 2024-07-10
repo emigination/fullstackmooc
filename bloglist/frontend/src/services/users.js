@@ -6,4 +6,12 @@ const getAll = () => {
   return request.then(response => response.data);
 };
 
-export default { getAll };
+const getById = async data => {
+  const id = data.queryKey[1];
+  if (!id) return null;
+
+  const request = axios.get(`${baseUrl}/${id}`);
+  return request.then(response => response.data || null);
+};
+
+export default { getAll, getById };
