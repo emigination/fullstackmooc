@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useUserValue } from '../UserContext';
 import { useParams } from 'react-router-dom';
 
-const BlogPage = ({ queryFunction, likeMutation, deleteMutation }) => {
+const BlogPage = ({ queryFunction, likeMutation, deleteMutation, addCommentMutation }) => {
   const user = useUserValue();
   const blogId = useParams().id;
   const blogResult = useQuery({ queryKey: ['blog', blogId], queryFn: queryFunction });
@@ -18,6 +18,13 @@ const BlogPage = ({ queryFunction, likeMutation, deleteMutation }) => {
       deleteMutation.mutate(blog);
     }
   };
+  const addComment = () => {
+    const content = document.getElementById('newComment').value;
+    if (!content) return;
+
+    addCommentMutation.mutate({ blogId, content });
+    document.getElementById('newComment').value = '';
+  }
 
   return (
     <div>
@@ -31,6 +38,10 @@ const BlogPage = ({ queryFunction, likeMutation, deleteMutation }) => {
         </p>
       )}
       <h3>comments</h3>
+      <form>
+        <input id='newComment'></input>
+        <button type='submit' id='postComment' onClick={addComment}>Add comment</button>
+      </form>
       <ul>
         {blog.comments.map((comment, index) => (
           <li key={index}>{comment.content}</li>

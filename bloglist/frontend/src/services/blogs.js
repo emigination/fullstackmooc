@@ -41,4 +41,13 @@ const destroy = async id => {
   return response.data;
 };
 
-export default { setToken, getAll, getById, createNew, update, destroy };
+const postComment = async commentData => {
+  if (!commentData.blogId || !commentData.content) return null;
+
+  const response = await axios.post(`${baseUrl}/${commentData.blogId}/comments`, { comment: commentData.content }, {
+    headers: { Authorization: token },
+  });
+  return response.data;
+}
+
+export default { setToken, getAll, getById, createNew, update, destroy, postComment };

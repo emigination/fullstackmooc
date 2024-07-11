@@ -63,6 +63,13 @@ const App = () => {
     onSuccess: () => queryClient.invalidateQueries('blogs'),
   });
 
+  const addCommentMutation = useMutation({
+    mutationFn: blogService.postComment,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['blog', data.id] });
+    },
+  })
+
   const handleLogin = async event => {
     event.preventDefault();
 
@@ -127,7 +134,7 @@ const App = () => {
       </div>
       <Routes>
         <Route path="/" element={blogsView} />
-        <Route path="/blogs/:id" element={<BlogPage queryFunction={blogService.getById} likeMutation={likeMutation} deleteMutation={deleteMutation} />} />
+        <Route path="/blogs/:id" element={<BlogPage queryFunction={blogService.getById} likeMutation={likeMutation} deleteMutation={deleteMutation} addCommentMutation={addCommentMutation} />} />
         <Route path="/users" element={<UserList queryFunction={userService.getAll} />} />
         <Route path="/users/:id" element={<UserPage queryFunction={userService.getById} />} />
       </Routes>
