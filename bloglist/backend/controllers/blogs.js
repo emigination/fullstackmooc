@@ -50,6 +50,9 @@ blogsRouter.delete('/:id', async (request, response) => {
   });
   if (blog) {
     blog.deleteOne();
+    const user = await User.findById(blog.user);
+    user.blogs = user.blogs.filter(b => b._id.toString() !== blog._id.toString());
+    await user.save();
     response.status(204).end();
   } else {
     return response.status(404).end();

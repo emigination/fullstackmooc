@@ -13,12 +13,12 @@ const UserList = ({ queryFunction }) => {
   const users = usersResult.data;
   return (
     <div>
-      <h2>users</h2>
-      <table>
+      <h1 className='title is-2'>Users</h1>
+      <table className='table'>
         <thead>
           <tr>
-            <th>name</th>
-            <th>blogs created</th>
+            <th>Name</th>
+            <th>Blogs created</th>
           </tr>
         </thead>
         <tbody>

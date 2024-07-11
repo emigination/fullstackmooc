@@ -14,14 +14,16 @@ const BlogList = ({ queryFunction, likeMutation, deleteMutation }) => {
   const blogs = blogsResult.data;
   return (
     <div>
-      <h2>blogs</h2>
-      {blogs
-        .sort((a, b) => b.likes - a.likes)
-        .map(blog => (
-          <p key={blog.id}>
-            <a href={`/blogs/${blog.id}`}>{blog.title}</a>
-          </p>
-        ))}
+      <h1 className='title is-2'>Blogs</h1>
+      <div className='pl-5'>
+        {blogs
+          .sort((a, b) => b.likes - a.likes)
+          .map(blog => (
+            <p key={blog.id} className='block'>
+              <a href={`/blogs/${blog.id}`}>{blog.title}</a>
+            </p>
+          ))}
+      </div>
     </div>
   );
 };

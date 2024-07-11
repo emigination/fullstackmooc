@@ -15,11 +15,11 @@ const BlogForm = ({ addBlogMutation }) => {
   };
 
   return (
-    <div>
-      <h2>create new</h2>
+    <div className='block'>
+      <h2 className='title is-4 is-capitalized'>create new</h2>
       <form onSubmit={submitBlog}>
-        <div>
-          <label htmlFor='title'>title</label>
+        <div className='block'>
+          <label htmlFor='title' className='is-capitalized mr-2'>title</label>
           <input
             id='title'
             type='text'
@@ -28,8 +28,8 @@ const BlogForm = ({ addBlogMutation }) => {
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
-        <div>
-          <label htmlFor='author'>author</label>
+        <div className='block'>
+          <label htmlFor='author' className='is-capitalized mr-2'>author</label>
           <input
             id='author'
             type='text'
@@ -38,8 +38,8 @@ const BlogForm = ({ addBlogMutation }) => {
             onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
-        <div>
-          <label htmlFor='url'>url</label>
+        <div className='block'>
+          <label htmlFor='url' className='is-capitalized mr-2'>URL</label>
           <input
             id='url'
             type='text'
@@ -48,7 +48,7 @@ const BlogForm = ({ addBlogMutation }) => {
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <button type='submit' id='create'>
+        <button type='submit' id='create' className='button is-primary is-light is-capitalized block'>
           create
         </button>
       </form>

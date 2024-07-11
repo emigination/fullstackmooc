@@ -12,11 +12,13 @@ const UserPage = ({ queryFunction }) => {
 
   return (
     <div>
-      <h2>{user.name}</h2>
-      <h3>added blogs</h3>
-      <ul>
+      <h2 className='title is-2 block'>{user.name}</h2>
+      <h3 className='block title is-5'>Added blogs</h3>
+      <ul className='block'>
         {user.blogs.map(blog => (
-          <li key={blog.id}>{blog.title}</li>
+          <li key={blog.id} className='block'>
+            <a href={`/blogs/${blog.id}`}>{blog.title}</a>
+          </li>
         ))}
       </ul>
     </div>

@@ -93,11 +93,11 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
-        <div>
+      <div className='ml-6'>
+        <div className='block'>
           <Notification />
         </div>
-        <LoginForm
+        <LoginForm className='block'
           handleLogin={handleLogin}
           username={username}
           setUsername={setUsername}
@@ -110,34 +110,45 @@ const App = () => {
 
   const blogsView = (
     <div>
-      <BlogList
-        queryFunction={blogService.getAll}
-        likeMutation={likeMutation}
-        deleteMutation={deleteMutation}
-      />
-      <Togglable buttonLabel='new blog' ref={blogFormRef}>
-        <BlogForm addBlogMutation={addBlogMutation} />
-      </Togglable>
+      <div className='block'>
+        <BlogList
+          queryFunction={blogService.getAll}
+          likeMutation={likeMutation}
+          deleteMutation={deleteMutation}
+        />
+      </div>
+      <div className='block mt-6'>
+        <Togglable buttonLabel='New blog' ref={blogFormRef}>
+          <BlogForm addBlogMutation={addBlogMutation} />
+        </Togglable>
+      </div>
     </div>
   );
 
   return (
     <div>
-      <div>
+      <div className='block ml-6'>
         <Notification />
       </div>
-      Logged in as &quot;{user.name}&quot;
-      <button onClick={() => handleLogout()}>Log out</button>
-      <div>
-        <Link to="/" style={{ marginRight: 1 + 'em' }}>blogs</Link>
-        <Link to="/users" style={{ marginRight: 1 + 'em' }}>users</Link>
+      <div className='block ml-6'>
+        <span style={{ verticalAlign: 'middle' }}>Logged in as &quot;{user.name}&quot;</span>
+        <button onClick={() => handleLogout()} className='button is-small ml-3'>Log out</button>
       </div>
-      <Routes>
-        <Route path="/" element={blogsView} />
-        <Route path="/blogs/:id" element={<BlogPage queryFunction={blogService.getById} likeMutation={likeMutation} deleteMutation={deleteMutation} addCommentMutation={addCommentMutation} />} />
-        <Route path="/users" element={<UserList queryFunction={userService.getAll} />} />
-        <Route path="/users/:id" element={<UserPage queryFunction={userService.getById} />} />
-      </Routes>
+      <nav className='navbar block is-primary' role='navigation'>
+        <div className='navbar-brand'>
+          <div className='navbar-item is-size-5'>👩‍💻</div>
+          <Link to='/' className='navbar-item has-text-white has-text-weight-medium is-size-5'>Blogs</Link>
+          <Link to='/users' className='navbar-item has-text-white has-text-weight-medium is-size-5'>Users</Link>
+        </div>
+      </nav>
+      <div className='block ml-6 mb-6'>
+        <Routes>
+          <Route path='/' element={blogsView} />
+          <Route path='/blogs/:id' element={<BlogPage queryFunction={blogService.getById} likeMutation={likeMutation} deleteMutation={deleteMutation} addCommentMutation={addCommentMutation} />} />
+          <Route path='/users' element={<UserList queryFunction={userService.getAll} />} />
+          <Route path='/users/:id' element={<UserPage queryFunction={userService.getById} />} />
+        </Routes>
+      </div>
     </div>
   );
 };
