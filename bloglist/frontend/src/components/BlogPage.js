@@ -30,6 +30,12 @@ const BlogPage = ({ queryFunction, likeMutation, deleteMutation }) => {
           <button onClick={remove}>delete</button>
         </p>
       )}
+      <h3>comments</h3>
+      <ul>
+        {blog.comments.map((comment, index) => (
+          <li key={index}>{comment.content}</li>
+        ))}
+      </ul>
     </div>
   );
 };

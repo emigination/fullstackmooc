@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
+const Comment = require('../models/comment');
 const User = require('../models/user');
 
 blogsRouter.get('/', async (request, response) => {
@@ -8,7 +9,10 @@ blogsRouter.get('/', async (request, response) => {
 });
 
 blogsRouter.get('/:id', async (request, response) => {
-  const blog = await Blog.findById(request.params.id).populate('user', { username: 1, name: 1 });
+  const blog = await Blog.findById(request.params.id).populate('user', { username: 1, name: 1 }).
+    populate('comments', { content: 1 }, Comment);
+  if (!blog) return response.status(404).end();
+
   response.json(blog);
 });
 
@@ -65,6 +69,22 @@ blogsRouter.put('/:id', async (request, response) => {
   } else {
     return response.status(404).end();
   }
+});
+
+blogsRouter.post('/:id/comments', async (request, response) => {
+  if (!request.user) {
+    return response.status(401).json({ error: 'token missing' });
+  }
+
+  const blog = await Blog.findById(request.params.id);
+  if (!blog) return response.status(404).end();
+  if (!request.body.comment) return response.status(400).end();
+
+  const comment = new Comment({ content: request.body.comment });
+  const savedComment = await comment.save();
+  blog.comments = blog.comments.concat(savedComment);
+  await blog.save();
+  response.status(201).json(blog);
 });
 
 module.exports = blogsRouter;

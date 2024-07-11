@@ -41,6 +41,8 @@ usersRouter.get('/:id', async (request, response) => {
     title: 1,
     author: 1,
   });
+  if (!user) return response.status(404).end();
+
   response.json(user);
 });
 
