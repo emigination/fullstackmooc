@@ -1,8 +1,15 @@
+import PropTypes from 'prop-types';
+import { useQuery } from '@apollo/client';
+import { ALL_AUTHORS } from '../queries';
+
 const Authors = (props) => {
+  const allAuthorsResult = useQuery(ALL_AUTHORS, { skip: !props.show });
   if (!props.show) {
     return null
   }
-  const authors = []
+  if (allAuthorsResult.loading) return <div>Loading...</div>;
+
+  const authors = allAuthorsResult.data.allAuthors
 
   return (
     <div>
@@ -26,5 +33,9 @@ const Authors = (props) => {
     </div>
   )
 }
+
+Authors.propTypes = {
+  show: PropTypes.bool.isRequired,
+};
 
 export default Authors
