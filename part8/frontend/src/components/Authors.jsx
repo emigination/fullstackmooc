@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
 import { ALL_AUTHORS } from '../queries';
+import EditAuthor from './EditAuthor';
 
 const Authors = (props) => {
   const allAuthorsResult = useQuery(ALL_AUTHORS, { skip: !props.show });
@@ -30,6 +31,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
+      <EditAuthor show={props.show} authors={authors} />
     </div>
   )
 }
