@@ -1,9 +1,10 @@
 const { ApolloServer } = require('@apollo/server')
+const { GraphQLError } = require('graphql')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const mongoose = require('mongoose')
+require('dotenv').config()
 const Author = require('./models/author')
 const Book = require('./models/book')
-require('dotenv').config()
 
 const MONGODB_URI = process.env.MONGODB_URI
 mongoose.set('strictQuery', false)
@@ -60,7 +61,7 @@ const resolvers = {
   Query: {
     allAuthors: async () => {
       let authors = await Author.find({})
-      const books = await Book.find({author: authors.map(author => author.id)})
+      const books = await Book.find({ author: authors.map(author => author.id) })
       const bookCountsByAuthorId = books.reduce((acc, book) => {
         const authorId = book.author.toString()
         acc[authorId] = acc[authorId] ? acc[authorId] + 1 : 1
@@ -90,9 +91,32 @@ const resolvers = {
       let author;
       if (args.author) {
         author = await Author.findOne({ name: args.author })
-        author ||= await new Author({ name: args.author }).save()
+        if (!author) {
+          try {
+            author = await new Author({ name: args.author }).save()
+          } catch (error) {
+            throw new GraphQLError('Failed to create author', {
+              extensions: {
+                code: 'BAD_USER_INPUT',
+                invalidArgs: args.author,
+                error
+              }
+            })
+          }
+        }
       }
-      const book = await new Book({ ...args, author: author?.id }).save();
+      let book;
+      try {
+        book = await new Book({ ...args, author: author?.id }).save()
+      } catch (error) {
+        throw new GraphQLError('Failed to create book', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args,
+            error
+          }
+        })
+      }
       return book.populate('author')
     },
     editAuthor: async (_root, args) => {
