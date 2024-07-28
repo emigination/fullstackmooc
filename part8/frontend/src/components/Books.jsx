@@ -1,36 +1,34 @@
+import { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
-import { ALL_BOOKS } from '../queries';
+import { ALL_GENRES } from '../queries';
+import BookList from './BookList';
 
 const Books = (props) => {
-  const allBooksResult = useQuery(ALL_BOOKS, { skip: !props.show });
+  const allGenresResult = useQuery(ALL_GENRES, { skip: !props.show });
+  const bookListRef = useRef()
+
   if (!props.show) {
     return null
   }
-  if (allBooksResult.loading) return <div>Loading...</div>;
+  if (allGenresResult.loading) return <div>Loading...</div>;
 
-  const books = allBooksResult.data.allBooks;
+  const genres = allGenresResult.data.allGenres;
 
   return (
     <div>
       <h2>books</h2>
 
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>author</th>
-            <th>published</th>
-          </tr>
-          {books.map((a) => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author?.name}</td>
-              <td>{a.published}</td>
-            </tr>
+      <div>
+        Filter by genre:
+        <select onChange={({ target }) => bookListRef.current.setGenre(target.value)}>
+          <option value=''>Select genre</option>
+          {genres.map((genre) => (
+            <option key={genre}>{genre}</option>
           ))}
-        </tbody>
-      </table>
+        </select>
+      </div>
+      <BookList show={props.show} ref={bookListRef}/>
     </div>
   )
 }

@@ -44,6 +44,7 @@ const typeDefs = `
   type Query {
     allAuthors: [Author!]!
     allBooks(author: String, genre: String): [Book!]!
+    allGenres: [String!]!
     authorCount: Int!
     bookCount: Int!
     me: User
@@ -105,6 +106,10 @@ const resolvers = {
       if (genre) queryParams.genres = genre
       const books = await Book.find(queryParams).populate('author')
       return books
+    },
+    allGenres: async () => {
+      const books = await Book.find({})
+      return Array.from(new Set(books.flatMap(book => book.genres))).filter(genre => genre).sort()
     },
     authorCount: async () => await Author.collection.countDocuments(),
     bookCount: async () => await Book.collection.countDocuments(),

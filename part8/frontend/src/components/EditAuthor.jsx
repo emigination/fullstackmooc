@@ -26,9 +26,7 @@ const EditAuthor = (props) => {
           <select value={name} onChange={({ target }) => setName(target.value)}>
             <option value=''>Select author</option>
             {props.authors.map((author) => (
-              <option key={author.name} value={author.name}>
-                {author.name}
-              </option>
+              <option key={author.name}>{author.name}</option>
             ))}
           </select>
         </div>
