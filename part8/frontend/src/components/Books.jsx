@@ -28,7 +28,7 @@ const Books = (props) => {
           ))}
         </select>
       </div>
-      <BookList show={props.show} ref={bookListRef}/>
+      <BookList show={props.show} genre={''} ref={bookListRef}/>
     </div>
   )
 }

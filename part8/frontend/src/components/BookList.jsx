@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 import { ALL_BOOKS } from '../queries';
 
 const BookList = forwardRef((props, ref) => {
-  const [genre, setGenre] = useState('')
+  const [genre, setGenre] = useState(props.genre)
   useImperativeHandle(ref, () => ({ setGenre }));
 
   const booksResult = useQuery(ALL_BOOKS, { variables: { genre }, skip: !props.show });
@@ -35,6 +35,7 @@ const BookList = forwardRef((props, ref) => {
 
 BookList.propTypes = {
   show: PropTypes.bool.isRequired,
+  genre: PropTypes.string
 };
 
 export default BookList
