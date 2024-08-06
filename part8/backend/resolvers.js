@@ -1,5 +1,7 @@
 const { GraphQLError } = require('graphql')
 const jwt = require('jsonwebtoken')
+const { PubSub } = require('graphql-subscriptions')
+const pubsub = new PubSub()
 require('dotenv').config()
 const Author = require('./models/author')
 const Book = require('./models/book')
@@ -81,7 +83,9 @@ const resolvers = {
           }
         })
       }
-      return book.populate('author')
+      book = book.populate('author')
+      pubsub.publish('BOOK_ADDED', { bookAdded: book })
+      return book
     },
     createUser: async (_root, args) => {
       const user = new User({ ...args })
@@ -109,6 +113,11 @@ const resolvers = {
       const userForToken = { username: user.username, id: user._id }
       return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
     },
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+    }
   }
 }
 
