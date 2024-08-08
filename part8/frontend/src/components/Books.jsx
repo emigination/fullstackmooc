@@ -21,7 +21,7 @@ const Books = (props) => {
 
       <div>
         Filter by genre:
-        <select onChange={({ target }) => bookListRef.current.setGenre(target.value)}>
+        <select name='genre' onChange={({ target }) => bookListRef.current.setGenre(target.value)}>
           <option value=''>Select genre</option>
           {genres.map((genre) => (
             <option key={genre}>{genre}</option>

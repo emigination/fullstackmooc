@@ -23,7 +23,7 @@ const EditAuthor = (props) => {
       <form onSubmit={submit}>
         <div>
           Name
-          <select value={name} onChange={({ target }) => setName(target.value)}>
+          <select name='author' value={name} onChange={({ target }) => setName(target.value)}>
             <option value=''>Select author</option>
             {props.authors.map((author) => (
               <option key={author.name}>{author.name}</option>
@@ -32,11 +32,7 @@ const EditAuthor = (props) => {
         </div>
         <div>
           Born
-          <input
-            type='number'
-            value={born}
-            onChange={({ target }) => setBorn(target.value)}
-          />
+          <input name='born' type='number' value={born} onChange={({ target }) => setBorn(target.value)} />
         </div>
         <button type='submit' disabled={!name}>Update author</button>
       </form>

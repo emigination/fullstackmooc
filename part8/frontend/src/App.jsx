@@ -1,9 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useSubscription } from '@apollo/client';
 import Authors from './components/Authors';
 import Books from './components/Books';
 import LoginForm from './components/LoginForm';
 import NewBook from './components/NewBook';
+import Notification from './components/Notification';
 import Recommendations from './components/Recommendations';
+import { BOOK_ADDED } from './queries';
 
 const App = () => {
   const [page, setPage] = useState('authors');
@@ -19,8 +22,22 @@ const App = () => {
     if (token) setToken(token);
   }, []);
 
+  const notificationRef = useRef();
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      const title = data.data.bookAdded.title;
+      notificationRef.current.setMessages([`New book added: ${title}`, ...notificationRef.current.messages]);
+      setTimeout(() => {
+        const messages = notificationRef.current.messages;
+        notificationRef.current.setMessages(messages.slice(0, -1));
+      }, 5000);
+    }
+  });
+
   return (
     <div>
+      <Notification ref={notificationRef}/>
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>

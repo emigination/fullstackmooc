@@ -30,11 +30,11 @@ const LoginForm = ({ show, setPage, setToken }) => {
       <form onSubmit={submit}>
         <div>
           username
-          <input value={username} onChange={({ target }) => setUsername(target.value)} />
+          <input name='username' value={username} onChange={({ target }) => setUsername(target.value)} autoComplete='username' />
         </div>
         <div>
           password
-          <input type='password' value={password} onChange={({ target }) => setPassword(target.value)} />
+          <input name='password' type='password' value={password} onChange={({ target }) => setPassword(target.value)} />
         </div>
         <button type='submit'>Log in</button>
       </form>
