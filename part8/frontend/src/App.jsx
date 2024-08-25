@@ -6,7 +6,7 @@ import LoginForm from './components/LoginForm';
 import NewBook from './components/NewBook';
 import Notification from './components/Notification';
 import Recommendations from './components/Recommendations';
-import { BOOK_ADDED } from './queries';
+import { ALL_BOOKS, BOOK_ADDED } from './queries';
 
 const App = () => {
   const [page, setPage] = useState('authors');
@@ -25,9 +25,15 @@ const App = () => {
   const notificationRef = useRef();
 
   useSubscription(BOOK_ADDED, {
-    onData: ({ data }) => {
-      const title = data.data.bookAdded.title;
-      notificationRef.current.setMessages([`New book added: ${title}`, ...notificationRef.current.messages]);
+    onData: ({ data, client }) => {
+      const book = data.data.bookAdded;
+      notificationRef.current.setMessages([`New book added: ${book.title}`, ...notificationRef.current.messages]);
+      ['', ...book.genres].forEach(genre => {
+        client.cache.updateQuery({ query: ALL_BOOKS, variables: { genre } }, ( cachedData ) => {
+          if (!cachedData) return;
+          return { allBooks: [...cachedData.allBooks, book] };
+        })
+      });
       setTimeout(() => {
         const messages = notificationRef.current.messages;
         notificationRef.current.setMessages(messages.slice(0, -1));

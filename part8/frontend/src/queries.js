@@ -48,6 +48,7 @@ export const BOOK_ADDED = gql`
   subscription {
     bookAdded {
       ...BookBasicInfo
+      genres
     }
   }
   ${BOOK_BASIC_INFO}
