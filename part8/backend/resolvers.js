@@ -9,27 +9,14 @@ const User = require('./models/user')
 
 const resolvers = {
   Author: {
-    bookCount: async (root) => {
-      if (Object.hasOwn(root, 'bookCount')) return root.bookCount
-      return await Book.where('author', root.id).countDocuments()
+    books: async (root) => {
+      if (Object.hasOwn(root, 'books')) return root.books;
+      return await Book.find({ author: root.id });
     },
   },
 
   Query: {
-    allAuthors: async () => {
-      let authors = await Author.find({})
-      const books = await Book.find({ author: authors.map(author => author.id) })
-      const bookCountsByAuthorId = books.reduce((acc, book) => {
-        const authorId = book.author.toString()
-        acc[authorId] = acc[authorId] ? acc[authorId] + 1 : 1
-        return acc
-      }, {})
-      authors = authors.map(author => {
-        const bookCount = bookCountsByAuthorId[author.id.toString()] || 0
-        return { ...author._doc, bookCount }
-      })
-      return authors
-    },
+    allAuthors: async () => await Author.find({}).populate('books'),
     allBooks: async (_root, { author, genre }) => {
       let queryParams = {};
       if (author) {
