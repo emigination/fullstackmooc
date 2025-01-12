@@ -1,3 +1,19 @@
+import { isNumber } from "./numberValidator";
+
+const validateExerciseArguments = (args: string[]): string[] => {
+  const errors: string[] = [];
+  if (args.length < 4) {
+    errors.push("not enough arguments");
+  } else {
+    if (!isNumber(args[2])) errors.push("target is not a number");
+    for (let i = 3; i < args.length; i++) {
+      if (!isNumber(args[i])) errors.push(`hours for day ${i-2} is not a number`);
+    }
+  }
+
+  return errors;
+}
+
 interface Result {
   periodLength: number;
   trainingDays: number;
@@ -34,4 +50,12 @@ const calculateExercises = (dailyExerciseHours: number[], target: number): Resul
   };
 };
 
-console.log(calculateExercises([1, 2, 3, 0, 4], 2))
+const argumentValidationErrors: string[] = validateExerciseArguments(process.argv);
+if (argumentValidationErrors.length > 0) {
+  console.log("Error: ", argumentValidationErrors.join(", "));
+  process.exit(1);
+}
+
+const target: number = Number(process.argv[2]);
+const hours: number[] = process.argv.slice(3).map(hoursString => Number(hoursString));
+console.log(calculateExercises(hours, target));
