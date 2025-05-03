@@ -3,14 +3,14 @@ import { isNumber } from "./numberValidator";
 const validateBmiArguments = (args: string[]): string[] => {
   const errors: string[] = [];
   if (args.length < 4) {
-    errors.push("not enough arguments")
+    errors.push("not enough arguments");
   } else {
     if (!isNumber(args[2])) errors.push("height is not a number");
     if (!isNumber(args[3])) errors.push("mass is not a number");
   }
 
   return errors;
-}
+};
 
 const calculateBmi = (height: number, mass: number): string => {
   const bmi: number = mass / (height / 100) ** 2;

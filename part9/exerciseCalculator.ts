@@ -12,7 +12,7 @@ const validateExerciseArguments = (args: string[]): string[] => {
   }
 
   return errors;
-}
+};
 
 interface Result {
   periodLength: number;
@@ -30,18 +30,24 @@ const calculateExercises = (dailyExerciseHours: number[], target: number): Resul
   const nOfTrainingDays: number = dailyExerciseHours.reduce((count, hours) => hours > 0 ? count + 1 : count, 0);
   let rating: number = 1;
   if (average >= target) {
-    rating = 3
+    rating = 3;
   } else if (average > 0.75 * target) {
-    rating = 2
+    rating = 2;
   };
   let ratingDescription: string;
   switch(rating) {
     case 1:
       ratingDescription = "There is room for improvement";
+      break;
     case 2:
       ratingDescription = "Almost there";
+      break;
     case 3:
       ratingDescription = "Well done";
+      break;
+    default:
+      ratingDescription = "";
+      break;
   };
 
   return {
