@@ -12,7 +12,6 @@ const validateBmiArguments = (args: string[]): string[] => {
   return errors;
 }
 
-
 const calculateBmi = (height: number, mass: number): string => {
   const bmi: number = mass / (height / 100) ** 2;
   let result: string;
@@ -29,11 +28,15 @@ const calculateBmi = (height: number, mass: number): string => {
   return result;
 };
 
-const argumentValidationErrors: string[] = validateBmiArguments(process.argv);
-if (argumentValidationErrors.length > 0) {
-  console.log("Error: ", argumentValidationErrors.join(", "));
-  process.exit(1);
+if (require.main === module) {
+  const argumentValidationErrors: string[] = validateBmiArguments(process.argv);
+  if (argumentValidationErrors.length > 0) {
+    console.log("Error: ", argumentValidationErrors.join(", "));
+    process.exit(1);
+  }
+  const height: number = Number(process.argv[2]);
+  const mass: number = Number(process.argv[3]);
+  console.log(calculateBmi(height, mass));
 }
-const height: number = Number(process.argv[2]);
-const mass: number = Number(process.argv[3]);
-console.log(calculateBmi(height, mass));
+
+export default calculateBmi;
