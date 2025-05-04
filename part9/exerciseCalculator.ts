@@ -56,12 +56,16 @@ const calculateExercises = (dailyExerciseHours: number[], target: number): Resul
   };
 };
 
-const argumentValidationErrors: string[] = validateExerciseArguments(process.argv);
-if (argumentValidationErrors.length > 0) {
-  console.log("Error: ", argumentValidationErrors.join(", "));
-  process.exit(1);
+if (require.main === module) {
+  const argumentValidationErrors: string[] = validateExerciseArguments(process.argv);
+  if (argumentValidationErrors.length > 0) {
+    console.log("Error: ", argumentValidationErrors.join(", "));
+    process.exit(1);
+  }
+
+  const target: number = Number(process.argv[2]);
+  const hours: number[] = process.argv.slice(3).map(hoursString => Number(hoursString));
+  console.log(calculateExercises(hours, target));
 }
 
-const target: number = Number(process.argv[2]);
-const hours: number[] = process.argv.slice(3).map(hoursString => Number(hoursString));
-console.log(calculateExercises(hours, target));
+export default calculateExercises;
