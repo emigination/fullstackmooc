@@ -4,7 +4,7 @@ export type Diagnosis = {
   latin?: string;
 };
 
-type Patient = {
+export type Patient = {
   id: string;
   name: string;
   dateOfBirth: string;
@@ -14,3 +14,5 @@ type Patient = {
 };
 
 export type PatientWithoutSsn = Omit<Patient, 'ssn'>;
+
+export type NewPatientEntry = Omit<Patient, 'id'>;
