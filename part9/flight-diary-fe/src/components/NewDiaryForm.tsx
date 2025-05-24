@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createDiary } from '../services/diaryService';
-import { ErrorMessage } from '../types';
+import { ErrorMessage, Weather, Visibility } from '../types';
 import NotificationSection from './NotificationSection';
 
 interface NewDiaryFormProps {
@@ -9,8 +9,8 @@ interface NewDiaryFormProps {
 
 export const NewDiaryForm = ({ fetchDiaries }: NewDiaryFormProps) => {
   const [date, setDate] = useState('');
-  const [weather, setWeather] = useState('');
-  const [visibility, setVisibility] = useState('');
+  const [weather, setWeather] = useState<Weather | ''>('');
+  const [visibility, setVisibility] = useState<Visibility | ''>('');
   const [comment, setComment] = useState('');
   const [errors, setErrors] = useState<ErrorMessage[]>([]);
 
@@ -37,6 +37,9 @@ export const NewDiaryForm = ({ fetchDiaries }: NewDiaryFormProps) => {
     setComment('');
   };
 
+  const weatherOptions: Weather[] = ['sunny', 'rainy', 'cloudy', 'stormy', 'windy'];
+  const visibilityOptions: Visibility[] = ['great', 'good', 'ok', 'poor'];
+
   return (
     <>
       <h2>Create a new diary entry</h2>
@@ -47,12 +50,32 @@ export const NewDiaryForm = ({ fetchDiaries }: NewDiaryFormProps) => {
           <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
         </p>
         <p>
-          <label>Weather </label>
-          <input type="text" value={weather} onChange={(e) => setWeather(e.target.value)} />
+          <label>Weather: </label>
+          {weatherOptions.map((weatherName) => (
+            <span key={weatherName}>
+              <input
+                type="radio"
+                value={weatherName}
+                checked={weather === weatherName}
+                onChange={() => setWeather(weatherName)}
+              />
+              {weatherName}
+            </span>
+          ))}
         </p>
         <p>
-          <label>Visibility </label>
-          <input type="text" value={visibility} onChange={(e) => setVisibility(e.target.value)} />
+          <label>Visibility: </label>
+          {visibilityOptions.map((visibilityName) => (
+            <span key={visibilityName}>
+              <input
+                type="radio"
+                value={visibilityName}
+                checked={visibility === visibilityName}
+                onChange={() =>  setVisibility(visibilityName) }
+              />
+              {visibilityName}
+            </span>
+          ))}
         </p>
         <p>
           <label>Comment </label>

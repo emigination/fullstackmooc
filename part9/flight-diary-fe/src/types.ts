@@ -15,3 +15,7 @@ export interface NewDiary {
 export interface ErrorMessage {
   error: string;
 }
+
+export type Weather = 'sunny' | 'rainy' | 'cloudy' | 'stormy' | 'windy';
+
+export type Visibility = 'great' | 'good' | 'ok' | 'poor';
