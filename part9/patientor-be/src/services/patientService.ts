@@ -7,6 +7,12 @@ const getEntries = () => {
   return patientData.map(({ ssn, ...rest }) => rest) as PatientWithoutSsn[];
 };
 
+const getEntry = (id: string): Patient | undefined => {
+  const entry = patientData.find((patient) => patient.id === id);
+  if (!entry) return undefined;
+  return { ...entry, entries: [] } as Patient;
+};
+
 const addEntry = (newPatientData: NewPatientEntry): Patient => {
   const id: string = uuid();
   const newPatient: Patient = { id, ...newPatientData };
@@ -17,5 +23,6 @@ const addEntry = (newPatientData: NewPatientEntry): Patient => {
 
 export {
   getEntries,
+  getEntry,
   addEntry
 };
