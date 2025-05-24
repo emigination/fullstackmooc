@@ -11,3 +11,7 @@ export interface NewDiary {
   visibility: string;
   comment: string;
 }
+
+export interface ErrorMessage {
+  error: string;
+}
