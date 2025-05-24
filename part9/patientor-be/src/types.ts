@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import { NewPatientSchema } from './utils';
 
-export type Diagnosis = {
+export interface Diagnosis {
   code: string;
   name: string;
   latin?: string;
 };
 
-export type Patient = {
+export interface Patient {
   id: string;
   name: string;
   dateOfBirth: string;
