@@ -1,7 +1,11 @@
 import { z } from 'zod';
-import { DiagnosisSchema, NewPatientSchema, PatientSchema, PatientWithoutSsnSchema,  } from './utils';
+import { DiagnosisSchema, EntrySchema, NewEntrySchema, NewPatientSchema, PatientSchema, PatientWithoutSsnSchema,  } from './utils';
 
 export type Diagnosis = z.infer<typeof DiagnosisSchema>;
+
+export type Entry = z.infer<typeof EntrySchema>;
+
+export type NewEntry = z.infer<typeof NewEntrySchema>;
 
 export type NewPatientEntry = z.infer<typeof NewPatientSchema>;
 
