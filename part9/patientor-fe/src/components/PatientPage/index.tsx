@@ -5,6 +5,8 @@ import { Typography } from '@mui/material';
 
 import { Patient } from "../../types";
 import patientService from "../../services/patients";
+import { formatDate } from "../../utils";
+import EntryList from "./EntryList";
 
 const PatientPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -44,18 +46,14 @@ const PatientPage = () => {
     );
   }
 
-  const formattedBirthDate = patient?.dateOfBirth
-    ? new Date(patient.dateOfBirth).toLocaleDateString('fi-FI', {})
-    : '';
-
   return (
     patient && <div>
-      <Typography variant="h5" sx={{ paddingBottom: '1em', paddingTop: '1em' }}>{patient.name}</Typography>
+      <Typography variant="h4" sx={{ paddingBottom: '1em', paddingTop: '1em' }}>{patient.name}</Typography>
       <table>
         <tbody>
           <tr>
             <td><Typography variant="subtitle2" sx={{ paddingRight: '1em' }}>Date of birth</Typography></td>
-            <td><Typography>{formattedBirthDate}</Typography></td>
+            <td><Typography>{formatDate(patient.dateOfBirth)}</Typography></td>
           </tr>
           <tr>
             <td><Typography variant="subtitle2">SSN</Typography></td>
@@ -71,6 +69,8 @@ const PatientPage = () => {
           </tr>
         </tbody>
       </table>
+      <Typography variant="h5" sx={{ paddingBottom: '1em', paddingTop: '1em' }}>Entries</Typography>
+      <EntryList entries={patient.entries} />
     </div>
   );
 };
