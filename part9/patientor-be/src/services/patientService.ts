@@ -10,7 +10,7 @@ const getEntries = () => {
 const getEntry = (id: string): Patient | undefined => {
   const entry = patientData.find((patient) => patient.id === id);
   if (!entry) return undefined;
-  return { ...entry, entries: [] } as Patient;
+  return entry;
 };
 
 const addEntry = (newPatientData: NewPatientEntry): Patient => {
