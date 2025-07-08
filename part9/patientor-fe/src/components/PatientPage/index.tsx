@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import axios from 'axios';
 import { Typography } from '@mui/material';
 
-import { Patient } from "../../types";
+import { Diagnosis, Patient } from "../../types";
 import patientService from "../../services/patients";
 import { formatDate } from "../../utils";
 import EntryList from "./EntryList";
 
-const PatientPage = () => {
+const PatientPage: React.FC<{ diagnosesMap: Record<string, Diagnosis> }>  = ({ diagnosesMap }) => {
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState<boolean>(true);
   const [patient, setPatient] = useState<Patient | null>(null);
@@ -70,7 +70,7 @@ const PatientPage = () => {
         </tbody>
       </table>
       <Typography variant="h5" sx={{ paddingBottom: '1em', paddingTop: '1em' }}>Entries</Typography>
-      <EntryList entries={patient.entries} />
+      <EntryList entries={patient.entries} diagnosesMap={diagnosesMap} />
     </div>
   );
 };
