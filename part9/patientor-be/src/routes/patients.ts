@@ -1,18 +1,18 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
-import { getEntries, getEntry, addEntry } from '../services/patientService';
+import { getPatients, getPatient, addPatient } from '../services/patientService';
 import { NewPatientEntry, PatientWithoutSsn, Patient } from '../types';
 import { NewPatientSchema } from '../utils';
 
 const router = express.Router();
 
 router.get('/', (_req, res: Response<PatientWithoutSsn[]>) => {
-  const patients: PatientWithoutSsn[] = getEntries();
+  const patients: PatientWithoutSsn[] = getPatients();
   res.send(patients);
 });
 
 router.get('/:id', (req: Request<{ id: string }>, res: Response<Patient | undefined>) => {
-  const patient = getEntry(req.params.id);
+  const patient = getPatient(req.params.id);
   res.send(patient);
 });
 
@@ -26,7 +26,7 @@ const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
 };
 
 router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatientEntry>, res: Response<Patient>) => {
-  const addedEntry = addEntry(req.body);
+  const addedEntry = addPatient(req.body);
   res.json(addedEntry);
 });
 
