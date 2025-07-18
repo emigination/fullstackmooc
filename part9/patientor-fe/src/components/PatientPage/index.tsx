@@ -7,6 +7,7 @@ import { Diagnosis, Patient } from "../../types";
 import patientService from "../../services/patients";
 import { formatDate } from "../../utils";
 import EntryList from "./EntryList";
+import NewEntryForm from "./NewEntryForm";
 
 const PatientPage: React.FC<{ diagnosesMap: Record<string, Diagnosis> }>  = ({ diagnosesMap }) => {
   const { id } = useParams<{ id: string }>();
@@ -70,6 +71,7 @@ const PatientPage: React.FC<{ diagnosesMap: Record<string, Diagnosis> }>  = ({ d
         </tbody>
       </table>
       <Typography variant="h5" sx={{ paddingBottom: '1em', paddingTop: '1em' }}>Entries</Typography>
+      <NewEntryForm patientId={patient.id} setPatient={setPatient}/>
       <EntryList entries={patient.entries} diagnosesMap={diagnosesMap} />
     </div>
   );

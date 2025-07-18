@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { EntrySchema, PatientSchema } from './utils';
+import { EntrySchema, EntryFormValuesSchema, HealthCheckEntrySchema, PatientSchema } from './utils';
 
 export interface Diagnosis {
   code: string;
@@ -18,3 +18,7 @@ export type Entry = z.infer<typeof EntrySchema>;
 export type Patient = z.infer<typeof PatientSchema>;
 
 export type PatientFormValues = Omit<Patient, "id" | "entries">;
+
+export type EntryFormValues = z.infer<typeof EntryFormValuesSchema>;
+
+export type HealthCheckEntry = z.infer<typeof HealthCheckEntrySchema>;

@@ -16,12 +16,12 @@ const HealthCheckRatingSchema = z.nativeEnum({
   CriticalRisk: 3,
 });
 
-const HealthCheckEntrySchema = BaseEntrySchema.extend({
+export const HealthCheckEntrySchema = BaseEntrySchema.extend({
   type: z.literal("HealthCheck"),
   healthCheckRating: HealthCheckRatingSchema,
 });
 
-const HospitalEntrySchema = BaseEntrySchema.extend({
+export const HospitalEntrySchema = BaseEntrySchema.extend({
   type: z.literal("Hospital"),
   discharge: z.object({
     date: z.string().date(),
@@ -29,7 +29,7 @@ const HospitalEntrySchema = BaseEntrySchema.extend({
   }),
 });
 
-const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({
+export const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({
   type: z.literal("OccupationalHealthcare"),
   employerName: z.string(),
   sickLeave: z.object({
@@ -42,6 +42,12 @@ export const EntrySchema = z.discriminatedUnion("type", [
   HealthCheckEntrySchema,
   HospitalEntrySchema,
   OccupationalHealthcareEntrySchema,
+]);
+
+export const EntryFormValuesSchema = z.discriminatedUnion("type", [
+  HealthCheckEntrySchema.omit({ id: true }),
+  HospitalEntrySchema.omit({ id: true }),
+  OccupationalHealthcareEntrySchema.omit({ id: true }),
 ]);
 
 export const PatientSchema = z.object({
