@@ -71,7 +71,7 @@ const PatientPage: React.FC<{ diagnosesMap: Record<string, Diagnosis> }>  = ({ d
         </tbody>
       </table>
       <Typography variant="h5" sx={{ paddingBottom: '1em', paddingTop: '1em' }}>Entries</Typography>
-      <NewEntryForm patientId={patient.id} setPatient={setPatient}/>
+      <NewEntryForm patientId={patient.id} setPatient={setPatient} diagnosesMap={diagnosesMap} />
       <EntryList entries={patient.entries} diagnosesMap={diagnosesMap} />
     </div>
   );

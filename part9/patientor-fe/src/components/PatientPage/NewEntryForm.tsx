@@ -1,21 +1,23 @@
 import { useState } from "react";
 import axios from 'axios';
 import { InputLabel, TextField, Button, Typography, Select, MenuItem } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { EntryFormValues, EntryType, Patient } from "../../types";
+import { Diagnosis, EntryFormValues, EntryType, Patient } from "../../types";
 import patientService from "../../services/patients";
 
 interface Props {
   patientId: string;
   setPatient: React.Dispatch<React.SetStateAction<Patient | null>>;
+  diagnosesMap: Record<string, Diagnosis>;
 }
 
-const NewEntryForm = ({ patientId, setPatient }: Props) => {
+const NewEntryForm = ({ patientId, setPatient, diagnosesMap }: Props) => {
   const [entryType, setEntryType] = useState<EntryType>("HealthCheck");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [specialist, setSpecialist] = useState("");
-  const [diagnosisCodes, setDiagnosisCodes] = useState("");
+  const [diagnosisCodes, setDiagnosisCodes] = useState<Array<string>>([]);
   const [healthCheckRating, setHealthCheckRating] = useState(0);
   const [dischargeDate, setDischargeDate] = useState("");
   const [dischargeCriteria, setDischargeCriteria] = useState("");
@@ -26,8 +28,7 @@ const NewEntryForm = ({ patientId, setPatient }: Props) => {
 
   const getCreateEntryArgs  = () : EntryFormValues => {
     const baseEntryArgs = {
-      description, date, specialist,
-      diagnosisCodes: diagnosisCodes.split(",").map(code => code.trim()).filter(code => code !== "")
+      description, date, specialist, diagnosisCodes
     };
     switch (entryType) {
       case "HealthCheck":
@@ -62,7 +63,7 @@ const NewEntryForm = ({ patientId, setPatient }: Props) => {
       setDescription("");
       setDate("");
       setSpecialist("");
-      setDiagnosisCodes("");
+      setDiagnosisCodes([]);
       setHealthCheckRating(0);
       setDischargeDate("");
       setDischargeCriteria("");
@@ -79,6 +80,14 @@ const NewEntryForm = ({ patientId, setPatient }: Props) => {
       }
       setError(message);
       console.error(message);
+    }
+  };
+
+  const changeEntryType = (newEntryType: string) => {
+    if (newEntryType === "Hospital" || newEntryType === "OccupationalHealthcare") {
+      setEntryType(newEntryType);
+    } else {
+      setEntryType("HealthCheck");
     }
   };
 
@@ -102,14 +111,11 @@ const NewEntryForm = ({ patientId, setPatient }: Props) => {
   const HospitalFields = (
     <div>
       <div style={{ marginBottom: '1em' }}>
-        <TextField
-          label="Discharge date"
-          id="dischargeDate"
-          placeholder="YYYY-MM-DD"
-          fullWidth
-          value={dischargeDate}
-          onChange={(e) => setDischargeDate(e.target.value)}
-        />
+      <DatePicker
+        label="Discharge date"
+        value={dischargeDate ? new Date(dischargeDate) : null}
+        onChange={(newValue) => setDischargeDate(newValue ? newValue.toISOString().split('T')[0] : '')}
+      />
       </div>
       <div style={{ marginBottom: '1em' }}>
         <TextField
@@ -137,23 +143,17 @@ const NewEntryForm = ({ patientId, setPatient }: Props) => {
         />
       </div>
       <div style={{ marginBottom: '1em' }}>
-        <TextField
+      <DatePicker
           label="Sick leave start date"
-          id="sickLeaveStartDate"
-          placeholder="YYYY-MM-DD"
-          fullWidth
-          value={sickLeaveStartDate}
-          onChange={(e) => setSickLeaveStartDate(e.target.value)}
-        />
+          value={sickLeaveStartDate ? new Date(sickLeaveStartDate) : null}
+          onChange={(newValue) => setSickLeaveStartDate(newValue ? newValue.toISOString().split('T')[0] : '')}
+      />
       </div>
       <div style={{ marginBottom: '1em' }}>
-        <TextField
+        <DatePicker
           label="Sick leave end date"
-          id="sickLeaveEndDate"
-          placeholder="YYYY-MM-DD"
-          fullWidth
-          value={sickLeaveEndDate}
-          onChange={(e) => setSickLeaveEndDate(e.target.value)}
+          value={sickLeaveEndDate ? new Date(sickLeaveEndDate) : null}
+          onChange={(newValue) => setSickLeaveEndDate(newValue ? newValue.toISOString().split('T')[0] : '')}
         />
       </div>
     </div>
@@ -174,13 +174,10 @@ const NewEntryForm = ({ patientId, setPatient }: Props) => {
         />
       </div>
       <div style={{ marginBottom: '1em' }}>
-        <TextField
+        <DatePicker
           label="Date"
-          id="date"
-          placeholder="YYYY-MM-DD"
-          fullWidth
-          value={date}
-          onChange={({ target }) => setDate(target.value)}
+          value={date ? new Date(date) : null}
+          onChange={(newValue) => setDate(newValue ? newValue.toISOString().split('T')[0] : '')}
         />
       </div>
       <div style={{ marginBottom: '1em' }}>
@@ -194,21 +191,26 @@ const NewEntryForm = ({ patientId, setPatient }: Props) => {
         />
       </div>
       <div style={{ marginBottom: '1em' }}>
-        <TextField
-          label="Diagnosis codes (comma separated)"
+        <InputLabel id="diagnosisCodes">Diagnosis codes</InputLabel>
+        <Select
           id="diagnosisCodes"
+          multiple
           value={diagnosisCodes}
-          onChange={(e) => setDiagnosisCodes(e.target.value)}
+          onChange={(e) => setDiagnosisCodes(Array.isArray(e.target.value) ? e.target.value : [])}
           fullWidth
-          margin="normal"
-        />
+          renderValue={(selected) => selected.join(", ")}
+        >
+          {Object.entries(diagnosesMap).sort().map(([code, diagnosis]) => (
+            <MenuItem key={code} value={code}>{`${code} - ${diagnosis.name}`}</MenuItem>
+          ))}
+        </Select>
       </div>
       <div style={{ marginBottom: '1em' }}>
         <InputLabel id="entryType">Entry type</InputLabel>
         <Select
           id="entryType"
           defaultValue="HealthCheck"
-          onChange={(e) => setEntryType(e.target.value as EntryType)}
+          onChange={(e) => changeEntryType(e.target.value)}
           fullWidth
         >
           <MenuItem value="HealthCheck">Health check</MenuItem>
