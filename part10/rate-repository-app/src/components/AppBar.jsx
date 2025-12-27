@@ -7,10 +7,10 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
     paddingBottom: 8,
-    marginBottom: 8,
     alignItems: 'center',
     borderBottomColor: theme.colors.separator,
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
+    marginBottom: 8,
   }
 });
 

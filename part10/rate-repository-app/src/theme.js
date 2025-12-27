@@ -3,7 +3,7 @@ const theme = {
     textPrimary: '#24292e',
     textSecondary: '#586069',
     primary: '#0366d6',
-    separator: '#d1d1d1ff'
+    separator: '#ecececff'
   },
   fontSizes: {
     body: 14,

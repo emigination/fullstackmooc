@@ -21,6 +21,9 @@ const styles = StyleSheet.create({
   fontWeightBold: {
     fontWeight: theme.fontWeights.bold,
   },
+  italic: {
+    fontStyle: 'italic'
+  }
 });
 
 const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
