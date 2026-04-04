@@ -1,5 +1,5 @@
-import { TextInput as NativeTextInput, StyleSheet } from 'react-native';
-
+import { TextInput as NativeTextInput, StyleSheet, View } from 'react-native';
+import ErrorText from './ErrorText'
 import theme from '../theme';
 
 const styles = StyleSheet.create({
@@ -12,16 +12,23 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     margin: 5,
+  },
+  error: {
+    borderColor: theme.colors.errorMessage,
   }
 });
 
-const TextInput = ({ style, ...props }) => {
+const TextInput = ({ errors, style, ...props }) => {
   const inputStyle = [
     styles.input,
+    errors && styles.error,
     style
   ];
 
-  return <NativeTextInput style={inputStyle} {...props} />;
+  return <View>
+    <NativeTextInput style={inputStyle} {...props} />
+    {errors && (<ErrorText>{errors}</ErrorText>)}
+  </View>;
 };
 
 export default TextInput;

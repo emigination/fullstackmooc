@@ -5,6 +5,7 @@ const theme = {
     primary: '#0366d6',
     separator: '#ecececff',
     inputBorder:  '#d6d6d6ec',
+    errorMessage: 'red'
   },
   fontSizes: {
     body: 14,
