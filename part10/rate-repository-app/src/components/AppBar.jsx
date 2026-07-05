@@ -1,8 +1,7 @@
 import { ScrollView, View, StyleSheet } from 'react-native';
-import { useLocation } from 'react-router-native';
+import { useLocation , Link } from 'react-router-native';
 
 import Constants from 'expo-constants';
-import { Link } from "react-router-native";
 import Text from './Text';
 import theme from '../theme';
 
