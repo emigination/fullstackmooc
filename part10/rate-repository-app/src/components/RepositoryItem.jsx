@@ -48,7 +48,7 @@ const KeyNumberBox = ( { title, number }) => {
 
 const RepositoryItem = ({ repository }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="repositoryItem" >
       <View style={styles.topHalf}>
         <Image source={{ uri: repository.ownerAvatarUrl }} style={styles.avatar}/>
         <View style={styles.descriptions}>

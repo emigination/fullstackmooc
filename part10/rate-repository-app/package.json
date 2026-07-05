@@ -6,6 +6,7 @@
     "start": "expo start",
     "lint": "eslint ./src/**/*.{js,jsx} App.js",
     "lint:fix": "eslint --fix ./src/**/*.{js,jsx} App.js",
+    "test": "jest",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
@@ -31,11 +32,22 @@
     "@babel/eslint-parser": "^7.28.5",
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
+    "@testing-library/react-native": "^14.0.1",
+    "@types/jest": "29.5.14",
     "babel-preset-expo": "~54.0.10",
     "eslint": "^9.39.4",
     "eslint-config-expo": "~10.0.0",
+    "eslint-plugin-jest": "^29.15.4",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-native": "^5.0.0"
+    "eslint-plugin-react-native": "^5.0.0",
+    "jest": "~29.7.0",
+    "jest-expo": "~54.0.17"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg|react-router-native)"
+    ]
   },
   "private": true
 }
