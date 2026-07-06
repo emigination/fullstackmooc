@@ -1,4 +1,7 @@
 import { Image, StyleSheet, View } from 'react-native';
+import { openURL } from 'expo-linking';
+
+import Button from './Button'
 import Text from './Text';
 import theme from '../theme';
 
@@ -46,7 +49,9 @@ const KeyNumberBox = ( { title, number }) => {
   )
 }
 
-const RepositoryItem = ({ repository }) => {
+const RepositoryItem = ({ repository, renderLink }) => {
+  const openRepo = () => openURL(repository.url)
+
   return (
     <View style={styles.container} testID="repositoryItem" >
       <View style={styles.topHalf}>
@@ -63,6 +68,9 @@ const RepositoryItem = ({ repository }) => {
         <KeyNumberBox title='Reviews' number={repository.reviewCount}/>
         <KeyNumberBox title='Rating' number={repository.ratingAverage}/>
       </View>
+      {renderLink && <View>
+        <Button title='View repository' onPress={openRepo}/>
+      </View>}
     </View>
   );
 };

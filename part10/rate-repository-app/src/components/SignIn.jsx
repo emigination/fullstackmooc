@@ -1,5 +1,7 @@
-import { Button, View } from 'react-native';
+import { View } from 'react-native';
 import { useNavigate } from 'react-router-native';
+
+import Button from './Button'
 import TextInput from './TextInput';
 import { Formik } from 'formik';
 import * as yup from 'yup';
