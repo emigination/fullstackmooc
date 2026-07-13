@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   scrollView: {
-    gap: 8,
+    gap: 12,
     justifyContent: 'space-evenly',
     paddingBottom: 8,
     paddingLeft: 5,
@@ -51,8 +51,17 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal contentContainerStyle={styles.scrollView}>
         <AppBarTab title='Repositories' route='/' />
-        {user && <AppBarTab title='Write a review' route='/new-review' />}
-        {user ? <SignOutButton /> : <AppBarTab title='Sign in' route='/sign-in' />}
+        {user ? (
+          <>
+            <AppBarTab title='Write a review' route='/new-review' />
+            <SignOutButton />
+          </>
+        ) : (
+          <>
+            <AppBarTab title='Sign in' route='/sign-in' />
+            <AppBarTab title='Sign up' route='/sign-up' />
+          </>
+      )}
       </ScrollView>
     </View>
   );
